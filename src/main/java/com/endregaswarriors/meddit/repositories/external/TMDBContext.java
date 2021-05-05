@@ -11,11 +11,11 @@ import java.util.logging.Logger;
 @Component
 public class TMDBContext implements ApiRepository{
 
-    Logger logger;
 
-    public TMDBContext(Logger logger)
+
+    public TMDBContext()
     {
-        this.logger = logger;
+
     }
 
     @Override
