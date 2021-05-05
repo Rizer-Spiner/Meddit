@@ -8,6 +8,7 @@ public class MedditApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MedditApplication.class, args);
+
     }
 
 }
