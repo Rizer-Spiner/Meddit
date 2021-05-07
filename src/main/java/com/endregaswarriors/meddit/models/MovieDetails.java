@@ -1,41 +1,45 @@
 package com.endregaswarriors.meddit.models;
 
-import com.endregaswarriors.meddit.repositories.external.JSONExtractFactory;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-@JsonDeserialize(using = JSONExtractFactory.TMDBMovieExtractor.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieDetails {
 
-    String id;
+    @SerializedName(value = "imdb_id", alternate = "id")
+    String imdb_id;
     String title;
-    String synopsis;
-    String posterPath;
-    LocalDate releaseDate;
+    String overview;
+    String poster_path;
+    LocalDate release_date;
     int runtime;
     String status;
-    double rating;
+    double vote_average;
 
+    public MovieDetails()
+    {
 
-    public MovieDetails(String id, String title, String synopsis, String posterPath, LocalDate releaseDate, int runtime, String status, double rating) {
-        this.id = id;
+    }
+
+    public MovieDetails(String imdb_id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status, double vote_average) {
+        this.imdb_id = imdb_id;
         this.title = title;
-        this.synopsis = synopsis;
-        this.posterPath = posterPath;
-        this.releaseDate = releaseDate;
+        this.overview = overview;
+        this.poster_path = poster_path;
+        this.release_date = release_date;
         this.runtime = runtime;
         this.status = status;
-        this.rating = rating;
+        this.vote_average = vote_average;
     }
 
-    public String getId() {
-        return id;
+    public String getImdb_id() {
+        return imdb_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setImdb_id(String id) {
+        this.imdb_id = id;
     }
 
     public String getTitle() {
@@ -47,27 +51,27 @@ public class MovieDetails {
     }
 
     public String getSynopsis() {
-        return synopsis;
+        return overview;
     }
 
     public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
+        this.overview = synopsis;
     }
 
-    public String getPosterPath() {
-        return posterPath;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
-    public LocalDate getReleaseDate() {
-        return releaseDate;
+    public LocalDate getRelease_date() {
+        return release_date;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setRelease_date(LocalDate release_date) {
+        this.release_date = release_date;
     }
 
     public int getRuntime() {
@@ -86,25 +90,25 @@ public class MovieDetails {
         this.status = status;
     }
 
-    public double getRating() {
-        return rating;
+    public double getVote_average() {
+        return vote_average;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setVote_average(double vote_average) {
+        this.vote_average = vote_average;
     }
 
     @Override
     public String toString() {
         return "MovieDetails{" +
-                "id='" + id + '\'' +
+                "id='" + imdb_id + '\'' +
                 ", title='" + title + '\'' +
-                ", synopsis='" + synopsis + '\'' +
-                ", posterPath='" + posterPath + '\'' +
-                ", releaseDate=" + releaseDate +
+                ", synopsis='" + overview + '\'' +
+                ", poster_path='" + poster_path + '\'' +
+                ", release_date=" + release_date +
                 ", runtime=" + runtime +
                 ", status='" + status + '\'' +
-                ", rating=" + rating +
+                ", vote_average=" + vote_average +
                 '}';
     }
 }
