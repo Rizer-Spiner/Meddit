@@ -1,18 +1,14 @@
 package com.endregaswarriors.meddit.repositories.external;
 
+import com.endregaswarriors.meddit.models.MovieDetails;
+import com.endregaswarriors.meddit.models.MovieSearchResult;
+import org.springframework.http.ResponseEntity;
 
-import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
+public interface MovieRepository {
 
-@Component
-public class MovieRepository {
-
-    public ApiContext apiContext;
-
-    public MovieRepository(ApiContext apiContext) {
-        this.apiContext = apiContext;
-    }
-
-
-
+    CompletableFuture<ResponseEntity<MovieDetails>> getMovieDetailsById(String id);
+    CompletableFuture<ResponseEntity<List<MovieSearchResult>>> searchMovies(String category, String query, Integer page);
 }

@@ -2,6 +2,7 @@ package com.endregaswarriors.meddit;
 
 
 import com.endregaswarriors.meddit.models.MovieDetails;
+import com.endregaswarriors.meddit.models.MovieSearchResult;
 import com.endregaswarriors.meddit.repositories.external.ApiConstants;
 
 import com.endregaswarriors.meddit.repositories.external.CustomExtractorFactory;
@@ -14,23 +15,11 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Collections;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 
 @SpringBootApplication
@@ -56,19 +45,19 @@ public class MedditApplication {
 
         System.out.println("------AND------");
 
-        String pathParam = String.format("%s/%s", ApiConstants.MOVIES, "popular");
-        String queryParam = String.format("%s=%s&%s=%s", ApiConstants.API_KEY, ApiConstants.TMDB_API_KEY, "page", "1");
+        String pathParam = String.format("%s/%s", ApiConstants.SEARCH, ApiConstants.MOVIES);
+        String queryParam = String.format("%s=%s&%s=%s&%s=%s", ApiConstants.API_KEY, ApiConstants.TMDB_API_KEY, ApiConstants.QUERY, "room", ApiConstants.PAGE, 1);
 
-        ResponseEntity<List<MovieDetails>> movieDetailsList = context.getMultiple(pathParam, queryParam, CustomExtractorFactory.getMovieDetailsListExtractor());
+        ResponseEntity<List<MovieSearchResult>> movieDetailsList = context.getMultiple(pathParam, queryParam, CustomExtractorFactory.getMovieSearchListExtractor());
 
         if (movieDetailsList.getStatusCode().is2xxSuccessful())
         {
-            List<MovieDetails> detailsList = movieDetailsList.getBody();
-            for (MovieDetails m : detailsList) {
+            List<MovieSearchResult> detailsList = movieDetailsList.getBody();
+            for (MovieSearchResult m : detailsList) {
                 System.out.println(m.toString());
             }
         }
-
+//
 
     }
 
