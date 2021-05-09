@@ -16,17 +16,19 @@ public class MovieSearchResult {
     @SerializedName(value="vote_average")
     private double rating;
     private String poster_path;
+    private double popularity;
 
     public MovieSearchResult() {
     }
 
-    public MovieSearchResult(String tmdb_id, String title, String overview, LocalDate release_Date, double rating, String poster_path) {
+    public MovieSearchResult(String tmdb_id, String title, String overview, LocalDate release_Date, double rating, String poster_path, double popularity) {
         this.tmdb_id = tmdb_id;
         this.title = title;
         this.overview = overview;
         this.release_Date = release_Date;
         this.rating = rating;
         this.poster_path = poster_path;
+        this.popularity = popularity;
     }
 
     public String getTmdb_id() {
@@ -86,6 +88,7 @@ public class MovieSearchResult {
                 ", release_Date=" + release_Date +
                 ", rating=" + rating +
                 ", poster_path='" + poster_path + '\'' +
+                ", popularity=" + popularity +
                 '}';
     }
 }

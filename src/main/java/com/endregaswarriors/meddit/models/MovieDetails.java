@@ -8,8 +8,8 @@ import java.time.LocalDate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieDetails {
 
-    @SerializedName(value = "imdb_id", alternate = "id")
-    String imdb_id;
+
+    long id;
     String title;
     String overview;
     String poster_path;
@@ -24,8 +24,8 @@ public class MovieDetails {
 
     }
 
-    public MovieDetails(String imdb_id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status, double rating) {
-        this.imdb_id = imdb_id;
+    public MovieDetails(long id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status, double rating) {
+        this.id = id;
         this.title = title;
         this.overview = overview;
         this.poster_path = poster_path;
@@ -35,12 +35,12 @@ public class MovieDetails {
         this.rating = rating;
     }
 
-    public String getImdb_id() {
-        return imdb_id;
+    public long getId() {
+        return id;
     }
 
-    public void setImdb_id(String id) {
-        this.imdb_id = id;
+    public void setIid(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -102,7 +102,7 @@ public class MovieDetails {
     @Override
     public String toString() {
         return "MovieDetails{" +
-                "id='" + imdb_id + '\'' +
+                "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", synopsis='" + overview + '\'' +
                 ", poster_path='" + poster_path + '\'' +
