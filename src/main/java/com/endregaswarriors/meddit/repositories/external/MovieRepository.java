@@ -1,7 +1,6 @@
 package com.endregaswarriors.meddit.repositories.external;
 
 import com.endregaswarriors.meddit.models.*;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

@@ -2,6 +2,7 @@ package com.endregaswarriors.meddit;
 
 
 import com.endregaswarriors.meddit.models.MovieDetails;
+import com.endregaswarriors.meddit.models.MovieImage;
 import com.endregaswarriors.meddit.models.MovieSearchResult;
 import com.endregaswarriors.meddit.models.PersonDetails;
 import com.endregaswarriors.meddit.repositories.external.*;
@@ -29,42 +30,16 @@ public class MedditApplication {
     public static void main(String[] args) {
         SpringApplication.run(MedditApplication.class, args);
 
-
-
-//        TMDBContext context = new TMDBContext();
-//
-//        String pathParameters = String.format("%s/%s", ApiConstants.MOVIES, "550");
-//        String queryParameters = String.format("%s=%s", ApiConstants.API_KEY, ApiConstants.TMDB_API_KEY);
-//
-//        ResponseEntity<MovieDetails> movieDetails = context.get(pathParameters, queryParameters, CustomExtractorFactory.getMovieDetailsExtractor());
-//
-//        if (movieDetails.getStatusCode().is2xxSuccessful())
-//        {
-//            MovieDetails movieDetails1 = movieDetails.getBody();
-//            System.out.println(movieDetails1.toString());
-//        }
-//
-//        System.out.println("------AND------");
-//
-//        String pathParam = String.format("%s/%s", ApiConstants.SEARCH, ApiConstants.MOVIES);
-//        String queryParam = String.format("%s=%s&%s=%s&%s=%s", ApiConstants.API_KEY, ApiConstants.TMDB_API_KEY, ApiConstants.QUERY, "room", ApiConstants.PAGE, 1);
-//
-//        ResponseEntity<List<MovieSearchResult>> movieDetailsList = context.getMultiple(pathParam, queryParam, CustomExtractorFactory.getMovieSearchListExtractor());
-//
-//        if (movieDetailsList.getStatusCode().is2xxSuccessful())
-//        {
-//            List<MovieSearchResult> detailsList = movieDetailsList.getBody();
-//            for (MovieSearchResult m : detailsList) {
-//                System.out.println(m.toString());
-//            }
-//        }
-//
-
         ApiContext apiContext = new TMDBContext();
+//        ApiContext apiContext1 = new TMDBContext();
+//        ApiContext apiContext2= new TMDBContext();
         MovieRepository movieRepository = new MovieRepositoryImpl(apiContext);
+//        MovieRepository movieRepository1 = new MovieRepositoryImpl(apiContext1);
+//        MovieRepository movieRepository2 = new MovieRepositoryImpl(apiContext2);
 
         CompletableFuture<ResponseEntity<MovieDetails>> movie = movieRepository.getMovieDetailsById(550);
         CompletableFuture<ResponseEntity<List<PersonDetails>>> cast = movieRepository.getMovieCast(550);
+        CompletableFuture<ResponseEntity<List<MovieImage>>> images = movieRepository.getMovieImages(550);
 
 
         try {
@@ -81,6 +56,7 @@ public class MedditApplication {
             e.printStackTrace();
         }
 
+
         System.out.println();
         System.out.println("AND");
         System.out.println();
@@ -96,6 +72,27 @@ public class MedditApplication {
             }
             else {
                 System.out.println(castResponse.getStatusCode().toString());
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+//
+        System.out.println();
+        System.out.println("AND");
+        System.out.println();
+//
+        try {
+            ResponseEntity<List<MovieImage>> imagesResponse = images.get();
+
+            if (imagesResponse.getStatusCode().is2xxSuccessful())
+            {
+                for (MovieImage p: Objects.requireNonNull(imagesResponse.getBody())) {
+                    System.out.println(p.toString());
+                }
+            }
+            else {
+                System.out.println(imagesResponse.getStatusCode().toString());
             }
 
         } catch (InterruptedException | ExecutionException e) {

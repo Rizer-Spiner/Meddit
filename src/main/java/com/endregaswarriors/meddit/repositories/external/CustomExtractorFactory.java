@@ -16,6 +16,7 @@ public class CustomExtractorFactory {
     private static final GsonBuilder movieDetailGsonBuilder = new GsonBuilder().registerTypeAdapter(MovieDetails.class,
             (JsonDeserializer<MovieDetails>) (json, typeOf, context) -> {
 
+
                 final long id = json.getAsJsonObject().get("id").getAsLong();
                 final String title = json.getAsJsonObject().get("title").getAsString();
                 final String overview = json.getAsJsonObject().get("overview").getAsString();
@@ -49,18 +50,13 @@ public class CustomExtractorFactory {
 
             }).setDateFormat("yyyy-mm-dd");
 
-//    private static final GsonBuilder movieImageGsonBuilder = new GsonBuilder().registerTypeAdapter(MovieImage.class,
-//            (JsonDeserializer<MovieImage>) (json, typeOf, context) ->
-//            {
-////                final String path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
-////                        json.getAsJsonObject().get("file_path").getAsString());
-//                  final String path = json.getAsJsonObject().get("file_path").getAsString();
-//                  final int height = json.getAsJsonObject().get("height").getAsInt();
-//                return null;
-//            });
+
+
+
 
     //CustomExtractors
     private static final ApiContext.CustomExtractor<MovieDetails> movieDetailsExtractor = string -> {
+
         Gson gson = movieDetailGsonBuilder.create();
         return gson.fromJson(string, MovieDetails.class);
     };
@@ -70,17 +66,6 @@ public class CustomExtractorFactory {
         return gson.fromJson(string, MovieSearchResult.class);
     };
 
-    private static final ApiContext.CustomExtractor<List<MovieDetails>> movieDetailsListExtractor = string -> {
-
-        Gson gson = movieDetailGsonBuilder.create();
-        Type founderListType = new TypeToken<ArrayList<MovieDetails>>() {
-        }.getType();
-
-        JsonElement element = JsonParser.parseString(string);
-        JsonElement list = element.getAsJsonObject().get("results").getAsJsonArray();
-
-        return gson.fromJson(list, founderListType);
-    };
 
     private static final ApiContext.CustomExtractor<List<MovieSearchResult>> movieSearchListExtractor = string -> {
         Gson gson = movieSearchGsonBuilder.create();
@@ -95,7 +80,7 @@ public class CustomExtractorFactory {
     };
 
     private static final ApiContext.CustomExtractor<List<MovieImage>> movieImagesListExtractor = string -> {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().create();
 
         Type founderListType = new TypeToken<ArrayList<MovieImage>>() {
         }.getType();
@@ -108,7 +93,7 @@ public class CustomExtractorFactory {
 
 
     private static final ApiContext.CustomExtractor<List<MovieVideo>> movieVideoListExtractor = string -> {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().create();
 
         Type founderListType = new TypeToken<ArrayList<MovieVideo>>() {
         }.getType();
@@ -132,18 +117,23 @@ public class CustomExtractorFactory {
         return gson.fromJson(list, founderListType);
     };
 
+    private static final ApiContext.CustomExtractor<List<MovieDetails>> movieDetailsListExtractor = string -> {
+
+        Gson gson = movieDetailGsonBuilder.create();
+        Type founderListType = new TypeToken<ArrayList<MovieDetails>>() {
+        }.getType();
+
+        JsonElement element = JsonParser.parseString(string);
+        JsonElement list = element.getAsJsonObject().get("results").getAsJsonArray();
+
+        return gson.fromJson(list, founderListType);
+    };
+
     ///Getters
     public static ApiContext.CustomExtractor<MovieDetails> getMovieDetailsExtractor() {
         return movieDetailsExtractor;
     }
 
-    public static ApiContext.CustomExtractor<List<MovieDetails>> getMovieDetailsListExtractor() {
-        return movieDetailsListExtractor;
-    }
-
-    public static ApiContext.CustomExtractor<MovieSearchResult> getMovieSearchExtractor() {
-        return movieSearchExtractor;
-    }
 
     public static ApiContext.CustomExtractor<List<MovieSearchResult>> getMovieSearchListExtractor() {
         return movieSearchListExtractor;
@@ -159,5 +149,13 @@ public class CustomExtractorFactory {
 
     public static ApiContext.CustomExtractor<List<PersonDetails>> getMovieCastListExtractor(){
         return movieCastListExtractor;
+    }
+
+    public static ApiContext.CustomExtractor<List<MovieDetails>> getMovieDetailsListExtractor() {
+        return movieDetailsListExtractor;
+    }
+
+    public static ApiContext.CustomExtractor<MovieSearchResult> getMovieSearchExtractor() {
+        return movieSearchExtractor;
     }
 }
