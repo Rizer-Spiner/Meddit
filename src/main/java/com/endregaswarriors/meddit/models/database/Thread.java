@@ -21,6 +21,5 @@ public class Thread {
     private Integer user_id;
     private String title;
     private String content;
-    private Integer counter;
     private LocalDate postDate;
 }
