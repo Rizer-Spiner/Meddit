@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class Thread {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer thread_id;
+    private Long thread_id;
 
     //TODO: add foreign key constraint
     //private Integer movie_id;
