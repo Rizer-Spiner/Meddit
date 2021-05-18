@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Movie {
+public class Subreddit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer subreddit_id;
