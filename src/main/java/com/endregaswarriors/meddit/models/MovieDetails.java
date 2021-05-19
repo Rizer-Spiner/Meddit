@@ -25,8 +25,10 @@ public class MovieDetails {
 
     }
 
-    public MovieDetails(long id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status, double rating) {
+
+    public MovieDetails(long id, String imdb_id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status, double rating) {
         this.id = id;
+        this.imdb_id = imdb_id;
         this.title = title;
         this.overview = overview;
         this.poster_path = poster_path;
@@ -100,12 +102,21 @@ public class MovieDetails {
         this.rating = rating;
     }
 
+    public String getImdb_id() {
+        return imdb_id;
+    }
+
+    public void setImdb_id(String imdb_id) {
+        this.imdb_id = imdb_id;
+    }
+
     @Override
     public String toString() {
         return "MovieDetails{" +
-                "id='" + id + '\'' +
+                "id=" + id +
+                ", imdb_id=" + imdb_id +
                 ", title='" + title + '\'' +
-                ", synopsis='" + overview + '\'' +
+                ", overview='" + overview + '\'' +
                 ", poster_path='" + poster_path + '\'' +
                 ", release_date=" + release_date +
                 ", runtime=" + runtime +

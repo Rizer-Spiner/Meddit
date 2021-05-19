@@ -18,6 +18,7 @@ public class CustomExtractorFactory {
 
 
                 final long id = json.getAsJsonObject().get("id").getAsLong();
+                final String imdb_id = json.getAsJsonObject().get("imdb_id").getAsString();
                 final String title = json.getAsJsonObject().get("title").getAsString();
                 final String overview = json.getAsJsonObject().get("overview").getAsString();
 //                final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
@@ -28,7 +29,7 @@ public class CustomExtractorFactory {
                 final String status = json.getAsJsonObject().get("status").getAsString();
                 final double vote_average = json.getAsJsonObject().get("vote_average").getAsDouble();
 
-                return new MovieDetails(id, title, overview, poster_path, release_date, runtime, status, vote_average);
+                return new MovieDetails(id,imdb_id, title, overview, poster_path, release_date, runtime, status, vote_average);
 
             }).setDateFormat("yyyy-mm-dd");
 
@@ -36,7 +37,7 @@ public class CustomExtractorFactory {
     private static final GsonBuilder movieSearchGsonBuilder = new GsonBuilder().registerTypeAdapter(MovieSearchResult.class,
             (JsonDeserializer<MovieSearchResult>) (json, typeOf, context) -> {
 
-                final String tmdb_id = json.getAsJsonObject().get("id").getAsString();
+                final long tmdb_id = json.getAsJsonObject().get("id").getAsLong();
                 final String title = json.getAsJsonObject().get("title").getAsString();
                 final String overview = json.getAsJsonObject().get("overview").getAsString();
 //                final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,

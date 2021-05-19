@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class MovieSearchResult {
 
     @SerializedName(value = "id")
-    private String tmdb_id;
+    private long tmdb_id;
     private String title;
     private String overview;
     private LocalDate release_Date;
@@ -21,7 +21,7 @@ public class MovieSearchResult {
     public MovieSearchResult() {
     }
 
-    public MovieSearchResult(String tmdb_id, String title, String overview, LocalDate release_Date, double rating, String poster_path, double popularity) {
+    public MovieSearchResult(long tmdb_id, String title, String overview, LocalDate release_Date, double rating, String poster_path, double popularity) {
         this.tmdb_id = tmdb_id;
         this.title = title;
         this.overview = overview;
@@ -31,11 +31,11 @@ public class MovieSearchResult {
         this.popularity = popularity;
     }
 
-    public String getTmdb_id() {
+    public long getTmdb_id() {
         return tmdb_id;
     }
 
-    public void setTmdb_id(String tmdb_id) {
+    public void setTmdb_id(long tmdb_id) {
         this.tmdb_id = tmdb_id;
     }
 
