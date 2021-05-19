@@ -1,0 +1,26 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  notification:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Discord Notifier
+      # You may pin to the exact commit or the version.
+      # uses: fateyan/action-discord-notifier@2d543d3e7e2c63546420b10f2652cb61e24578fc
+      uses: fateyan/action-discord-notifier@v1.2.0
+      with:
+        # A full discord webhook url
+        webhook: https://discord.com/api/webhooks/834438209483702283/p9aqJfqSGXdE_F6lHwPftcR1QRlRk_rIWNx3-9X8NznJdpnPkzY_MG0d8HQbIPMnlepr
+        # Message title
+        message-title: A new push/pull request has been made on the master branch

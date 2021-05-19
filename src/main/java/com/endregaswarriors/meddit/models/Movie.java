@@ -1,18 +1,18 @@
 package com.endregaswarriors.meddit.models;
 
+import lombok.Builder;
+import lombok.Getter;
+
+import java.util.List;
+
+@Builder
+@Getter
 public class Movie {
 
-    public String name;
+    private MovieDetails details;
+    private List<MovieImage> images;
+    private List<MovieVideo> videos;
+    private List<PersonDetails> cast;
+    private MedditInfo medditInfo;
 
-    public Movie(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
