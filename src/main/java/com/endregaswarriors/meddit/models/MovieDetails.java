@@ -10,6 +10,7 @@ public class MovieDetails {
 
 
     long id;
+    String imdb_id;
     String title;
     String overview;
     String poster_path;
