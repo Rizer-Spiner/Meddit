@@ -1,22 +1,20 @@
 package com.endregaswarriors.meddit.models.database;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Subreddit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer subreddit_id;
 
     private Integer movie_id;
+    private LocalDate created;
 }
