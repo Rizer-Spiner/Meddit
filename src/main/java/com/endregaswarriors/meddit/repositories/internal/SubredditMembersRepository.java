@@ -7,6 +7,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface SubredditMembersRepository extends CrudRepository<SubredditMember, SubredditMemberPK> {
-    @Query("SELECT count(members.subredditMemberPK.user_id) FROM SubredditMember members WHERE members.subredditMemberPK.subreddit_id = :id")
-    Integer countSubredditMembers(@Param("id") Integer subreddit_id);
+    @Query("SELECT count(members.subredditMemberPK.user_id) FROM SubredditMember members " +
+            "JOIN Subreddit subreddit ON members.subredditMemberPK.subreddit_id=subreddit.subreddit_id " +
+            "WHERE subreddit.movie_id = :id")
+    Integer countSubredditMembers(@Param("id") Integer IMDB_id);
 }

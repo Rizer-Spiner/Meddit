@@ -17,11 +17,11 @@ class SubredditMembersRepositoryTest {
 
     @Test
     void countSubredditMembers_ifExists() {
-        assertEquals(1, repository.countSubredditMembers(1));
+        assertEquals(1, repository.countSubredditMembers(15414));
     }
 
     @Test
     void countSubredditMembers_empty() {
-        assertEquals(0, repository.countSubredditMembers(15));
+        assertEquals(0, repository.countSubredditMembers(126029));
     }
 }
