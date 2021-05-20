@@ -1,9 +1,11 @@
 package com.endregaswarriors.meddit.models.database;
 
+import com.endregaswarriors.meddit.models.database.keys.ThreadLikePK;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -13,10 +15,8 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class ThreadLikes {
 
-    @Id
-    private Long thread_id;
-    @Id
-    private Integer user_id;
+    @EmbeddedId
+    private ThreadLikePK threadLikePK;
     private Boolean like;
 
 }

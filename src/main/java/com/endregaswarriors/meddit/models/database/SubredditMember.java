@@ -1,5 +1,6 @@
 package com.endregaswarriors.meddit.models.database;
 
+import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubredditMember {
-    @Id
-    private Integer subreddit_id;
-    @Id
-    private Integer user_id;
+    @EmbeddedId
+    SubredditMemberPK subredditMemberPK;
 }
