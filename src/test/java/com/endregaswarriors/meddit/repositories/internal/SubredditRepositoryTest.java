@@ -24,4 +24,11 @@ class SubredditRepositoryTest {
 
         assertTrue(optionalSubreddit.isPresent());
     }
+
+    @Test
+    void findSubredditByMovieId_exists(){
+        Optional<Subreddit> optionalSubreddit = repository.findSubredditByMovie_id(126029);
+
+        assertTrue(optionalSubreddit.isPresent());
+    }
 }
