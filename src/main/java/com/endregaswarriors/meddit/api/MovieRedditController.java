@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,10 +52,10 @@ public class MovieRedditController extends ControllerBase {
     @GetMapping("/search/{queryParameter}")
     public CompletableFuture<ResponseEntity<List<MovieSearchResult>>> searchMovies(@PathVariable(value = "queryParameter") String queryParameter) {
 
-        return movieRedditService.searchForMovie(queryParameter).thenCompose(s -> {
+        return movieRedditService.searchForMovie(queryParameter).thenComposeAsync(s -> {
             if (s.isEmpty() || s == null)
                 return custom(204, null);
-            else return success();
+            else return success(s);
         });
     }
 
