@@ -18,18 +18,28 @@ public class CustomExtractorFactory {
 
 
                 final long id = json.getAsJsonObject().get("id").getAsLong();
-                final String imdb_id = json.getAsJsonObject().get("imdb_id").getAsString();
                 final String title = json.getAsJsonObject().get("title").getAsString();
-                final String overview = json.getAsJsonObject().get("overview").getAsString();
-//                final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
-//                        json.getAsJsonObject().get("poster_path").getAsString());
-                final String poster_path = json.getAsJsonObject().get("poster_path").getAsString();
                 final LocalDate release_date = LocalDate.parse(json.getAsJsonObject().get("release_date").getAsString());
-                final int runtime = json.getAsJsonObject().get("runtime").getAsInt();
                 final String status = json.getAsJsonObject().get("status").getAsString();
                 final double vote_average = json.getAsJsonObject().get("vote_average").getAsDouble();
 
-                return new MovieDetails(id,imdb_id, title, overview, poster_path, release_date, runtime, status, vote_average);
+                // TODO: 5/20/2021 Figure out if you can get the overview from the MovieSearchResult coresponding to it
+                final String overview = json.getAsJsonObject().get("overview") == JsonNull.INSTANCE
+                        ? "null"
+                        : json.getAsJsonObject().get("overview").getAsString();
+                final String imdb_id = json.getAsJsonObject().get("imdb_id") == JsonNull.INSTANCE
+                        ? "null"
+                        : json.getAsJsonObject().get("imdb_id").getAsString();
+
+                final String poster_path = json.getAsJsonObject().get("poster_path") == JsonNull.INSTANCE
+                        ? "null"
+                        : json.getAsJsonObject().get("poster_path").getAsString();
+                final int runtime = json.getAsJsonObject().get("runtime") == JsonNull.INSTANCE
+                        ? 0
+                        : json.getAsJsonObject().get("runtime").getAsInt();
+//final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
+//json.getAsJsonObject().get("poster_path").getAsString());
+                return new MovieDetails(id, imdb_id, title, overview, poster_path, release_date, runtime, status, vote_average);
 
             }).setDateFormat("yyyy-mm-dd");
 
@@ -40,19 +50,20 @@ public class CustomExtractorFactory {
                 final long tmdb_id = json.getAsJsonObject().get("id").getAsLong();
                 final String title = json.getAsJsonObject().get("title").getAsString();
                 final String overview = json.getAsJsonObject().get("overview").getAsString();
-//                final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
-//                        json.getAsJsonObject().get("poster_path").getAsString());
-                final String poster_path = json.getAsJsonObject().get("poster_path").getAsString();
                 final LocalDate release_date = LocalDate.parse(json.getAsJsonObject().get("release_date").getAsString());
                 final double rating = json.getAsJsonObject().get("vote_average").getAsDouble();
                 final double popularity = json.getAsJsonObject().get("popularity").getAsDouble();
 
+                final String poster_path = json.getAsJsonObject().get("poster_path") == JsonNull.INSTANCE
+                        ? "null"
+                        : json.getAsJsonObject().get("poster_path").getAsString();
+
+//final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
+//json.getAsJsonObject().get("poster_path").getAsString());
+
                 return new MovieSearchResult(tmdb_id, title, overview, release_date, rating, poster_path, popularity);
 
             }).setDateFormat("yyyy-mm-dd");
-
-
-
 
 
     //CustomExtractors
@@ -148,7 +159,7 @@ public class CustomExtractorFactory {
         return movieVideoListExtractor;
     }
 
-    public static ApiContext.CustomExtractor<List<PersonDetails>> getMovieCastListExtractor(){
+    public static ApiContext.CustomExtractor<List<PersonDetails>> getMovieCastListExtractor() {
         return movieCastListExtractor;
     }
 

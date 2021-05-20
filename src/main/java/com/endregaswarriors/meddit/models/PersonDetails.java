@@ -1,6 +1,7 @@
 package com.endregaswarriors.meddit.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.SerializedName;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,6 +15,7 @@ public class PersonDetails {
     private int cast_id;
     private String character;
     @SerializedName(value = "profile_path")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String profilePicture;
 
     public PersonDetails(long id, String department, String name, int cast_id, String character, String profilePicture) {
