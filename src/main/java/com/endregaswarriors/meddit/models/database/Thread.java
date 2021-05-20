@@ -15,10 +15,12 @@ public class Thread {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long thread_id;
-
-    //TODO: add foreign key constraint
-    //private Integer movie_id;
-    private Integer user_id;
+    @ManyToOne
+    @JoinColumn(name = "subreddit_id")
+    private Subreddit subreddit;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private MedditUser user;
     private String title;
     private String content;
     private LocalDate postdate;
