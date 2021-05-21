@@ -36,7 +36,8 @@ public class MovieRedditController extends ControllerBase {
     @ApiOperation(value = "Get full information regarding a movie subreddit", response = Movie.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved subreddit information"),
-            @ApiResponse(code = 404, message = "The subreddit related to the movie id could not be found")
+            @ApiResponse(code = 404, message = "The subreddit related to the movie id could not be found"),
+            @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("/{movieId}")
     public CompletableFuture<ResponseEntity<Movie>> getMovieSubreddit(@PathVariable(value = "movieId") Integer movieId) {
@@ -47,7 +48,8 @@ public class MovieRedditController extends ControllerBase {
     @ApiOperation(value = "Get a list of movies matching with query parameter ", response = MovieSearchResult[].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved search result"),
-            @ApiResponse(code = 204, message = "The query returns 0 results")
+            @ApiResponse(code = 204, message = "The query returns 0 results"),
+            @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("/search/{queryParameter}")
     public CompletableFuture<ResponseEntity<List<MovieSearchResult>>> searchMovies(@PathVariable(value = "queryParameter") String queryParameter) {

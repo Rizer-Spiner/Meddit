@@ -1,6 +1,4 @@
 package com.endregaswarriors.meddit.api;
-
-
 import com.endregaswarriors.meddit.models.Response;
 import org.springframework.http.ResponseEntity;
 
@@ -74,6 +72,8 @@ public abstract class ControllerBase {
                 return custom(404);
             case CONFLICT:
                 return custom(409);
+            case NOT_IMPLEMENTED:
+                return custom(501);
             default:
                 return custom(500);
         }

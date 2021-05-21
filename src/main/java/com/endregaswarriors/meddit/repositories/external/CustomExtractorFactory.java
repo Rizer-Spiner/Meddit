@@ -23,7 +23,7 @@ public class CustomExtractorFactory {
                 final String status = json.getAsJsonObject().get("status").getAsString();
                 final double vote_average = json.getAsJsonObject().get("vote_average").getAsDouble();
 
-                // TODO: 5/20/2021 Figure out if you can get the overview from the MovieSearchResult coresponding to it
+                // TODO: 5/20/2021 Figure out if you can get the overview from the MovieSearchResult corresponding to it
                 final String overview = json.getAsJsonObject().get("overview") == JsonNull.INSTANCE
                         ? "null"
                         : json.getAsJsonObject().get("overview").getAsString();
