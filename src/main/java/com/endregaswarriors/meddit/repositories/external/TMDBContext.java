@@ -13,24 +13,25 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 
 @Component
 public class TMDBContext implements ApiContext {
 
-    final WebClient webClient;
-    final WebClient.UriSpec<WebClient.RequestBodySpec> getSpec;
 
-    public  TMDBContext() {
-        HttpClient httpClient = HttpClient.create()
+    final HttpClient httpClient;
+    final WebClient webClient;
+
+    public TMDBContext() {
+
+        this.httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 4000)
                 .responseTimeout(Duration.ofMillis(4000))
                 .doOnConnected(conn ->
                         conn.addHandlerLast(new ReadTimeoutHandler(4000, TimeUnit.MILLISECONDS))
                                 .addHandlerLast(new WriteTimeoutHandler(4000, TimeUnit.MILLISECONDS)));
-
-
         this.webClient = WebClient.builder()
                 .baseUrl(ApiConstants.TMDB_BASE_URL)
                 .defaultCookie("cookieKey", "cookieValue")
@@ -38,24 +39,17 @@ public class TMDBContext implements ApiContext {
                 .defaultUriVariables(Collections.singletonMap("url", ApiConstants.TMDB_BASE_URL))
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
-      this.getSpec = webClient.method(HttpMethod.GET);
-        
+    }
+
+    private WebClient.UriSpec<WebClient.RequestBodySpec> getClient() {
+
+        return webClient.method(HttpMethod.GET);
     }
 
     @Override
-    public  <TType> ResponseEntity<List<TType>> getMultiple(String pathParameters, String queryParameters, CustomExtractor<List<TType>> deserializer) {
+    public <TType> ResponseEntity<List<TType>> getMultiple(String pathParameters, String queryParameters, CustomExtractor<List<TType>> deserializer) {
 
-        WebClient.ResponseSpec responseSpec;
-        synchronized (this)
-        {
-            final String uri = !(queryParameters.equals(""))
-                    ? String.format("/%s?%s", pathParameters, queryParameters)
-                    : String.format("/%s", pathParameters);
-
-            WebClient.RequestBodySpec bodySpec = getSpec.uri(uri);
-            responseSpec = bodySpec.retrieve();
-
-        }
+        WebClient.ResponseSpec responseSpec = request(pathParameters, queryParameters);
         ResponseEntity<String> responseEntity = responseSpec.toEntity(String.class).block();
 
         if (responseEntity == null) return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NO_CONTENT);
@@ -66,26 +60,73 @@ public class TMDBContext implements ApiContext {
     }
 
     @Override
-    public  <TType> ResponseEntity<TType> get(String pathParameters, String queryParameters, CustomExtractor<TType> deserializer) {
+    public <TType> ResponseEntity<TType> get(String pathParameters, String queryParameters, CustomExtractor<TType> deserializer) {
 
-        WebClient.ResponseSpec responseSpec;
-        synchronized (this)
-        {
-            final String uri = !(queryParameters.equals(""))
-                    ? String.format("/%s?%s", pathParameters, queryParameters)
-                    : String.format("/%s", pathParameters);
-
-            WebClient.RequestBodySpec bodySpec = getSpec.uri(uri);
-            responseSpec = bodySpec.retrieve();
-        }
+        WebClient.ResponseSpec responseSpec = request(pathParameters, queryParameters);
         ResponseEntity<String> responseEntity = responseSpec.toEntity(String.class).block();
 
         if (responseEntity == null) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        if (responseEntity.getStatusCode().is2xxSuccessful())
-        {
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
             String s = responseEntity.getBody();
             return new ResponseEntity<>(deserializer.deserialize(s), responseEntity.getStatusCode());
         } else return new ResponseEntity<>(null, responseEntity.getStatusCode());
 
     }
+
+    private WebClient.ResponseSpec request(String pathParameters, String queryParameters) {
+        WebClient.ResponseSpec responseSpec;
+        synchronized (this) {
+            final String uri = !(queryParameters.equals(""))
+                    ? String.format("/%s?%s", pathParameters, queryParameters)
+                    : String.format("/%s", pathParameters);
+
+            WebClient.RequestBodySpec bodySpec = getClient().uri(uri);
+            responseSpec = bodySpec.retrieve();
+        }
+
+        return responseSpec;
+    }
+
+
+    @Override
+    public <TType> CompletableFuture<ResponseEntity<TType>> getAsync(String pathParameters, String queryParameters, CustomExtractor<TType> deserializer) {
+
+        return CompletableFuture.supplyAsync(() -> {
+            final String uri = !(queryParameters.equals(""))
+                    ? String.format("/%s?%s", pathParameters, queryParameters)
+                    : String.format("/%s", pathParameters);
+            return getClient().uri(uri).retrieve();
+        }).thenApplyAsync(responseSpec -> {
+            final ResponseEntity<String> responseEntity = responseSpec.toEntity(String.class).block();
+            if (responseEntity == null) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                final String s = responseEntity.getBody();
+                return new ResponseEntity<>(deserializer.deserialize(s), responseEntity.getStatusCode());
+            } else return new ResponseEntity<>(null, responseEntity.getStatusCode());
+        });
+    }
+
+    @Override
+    public <TType> CompletableFuture<ResponseEntity<List<TType>>> getMultipleAsync(String pathParameters, String queryParameters, CustomExtractor<List<TType>> deserializer) {
+        return CompletableFuture.supplyAsync(() ->
+        {
+            WebClient.RequestBodySpec bodySpec;
+
+            final String uri = !(queryParameters.equals(""))
+                    ? String.format("/%s?%s", pathParameters, queryParameters)
+                    : String.format("/%s", pathParameters);
+            bodySpec = getClient().uri(uri);
+            return bodySpec.retrieve();
+        }).thenApplyAsync(responseSpec ->
+        {
+            final ResponseEntity<String> responseEntity = responseSpec.toEntity(String.class).block();
+            if (responseEntity == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                final String s = responseEntity.getBody();
+                return new ResponseEntity<>(deserializer.deserialize(s), responseEntity.getStatusCode());
+            } else return new ResponseEntity<>(null, responseEntity.getStatusCode());
+
+        });
+    }
+
 }

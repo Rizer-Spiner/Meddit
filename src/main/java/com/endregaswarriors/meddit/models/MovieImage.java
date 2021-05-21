@@ -1,6 +1,7 @@
 package com.endregaswarriors.meddit.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.annotations.SerializedName;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,6 +12,7 @@ public class MovieImage {
     private int height;
     private int width;
     @SerializedName(value = "iso_639_1")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String language;
 
     public MovieImage()

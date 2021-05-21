@@ -10,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
 public interface MovieRedditService {
 
     CompletableFuture<List<MovieSearchResult>> searchForMovie(String keyword);
-
     CompletableFuture<Response<Movie>> getMovieDetails(Integer IMDB_id);
 
 }
