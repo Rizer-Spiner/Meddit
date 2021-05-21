@@ -6,5 +6,7 @@ public enum Status {
     UNAUTHORIZED,
     NOT_ALLOWED,
     NOT_FOUND,
-    CONFLICT
+    CONFLICT,
+    INTERNAL_ERROR,
+
 }
