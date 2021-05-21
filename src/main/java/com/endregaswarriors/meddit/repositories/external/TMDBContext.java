@@ -98,7 +98,7 @@ public class TMDBContext implements ApiContext {
             return getClient().uri(uri).retrieve();
         }).thenApplyAsync(responseSpec -> {
             final ResponseEntity<String> responseEntity = responseSpec.toEntity(String.class).block();
-            if (responseEntity == null) return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            if (responseEntity == null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 final String s = responseEntity.getBody();
                 return new ResponseEntity<>(deserializer.deserialize(s), responseEntity.getStatusCode());

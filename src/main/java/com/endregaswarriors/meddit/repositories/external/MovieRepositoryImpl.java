@@ -27,6 +27,7 @@ public class MovieRepositoryImpl implements MovieRepository {
         return apiContext.getAsync(pathParameters, queryParameters, CustomExtractorFactory.getMovieDetailsExtractor());
     }
 
+    @Override
     public CompletableFuture<ResponseEntity<List<MovieSearchResult>>> searchMovies(String query, Integer page) {
         final String pathParameters = String.format("%s/%s", ApiConstants.SEARCH, ApiConstants.MOVIES);
         final String queryParameters = String.format("%s=%s&%s=%s&%s=%s", ApiConstants.API_KEY, ApiConstants.TMDB_API_KEY, ApiConstants.QUERY, query, ApiConstants.PAGE, page);

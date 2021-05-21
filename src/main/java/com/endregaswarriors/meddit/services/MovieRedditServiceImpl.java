@@ -31,6 +31,6 @@ public class MovieRedditServiceImpl implements MovieRedditService{
 
     @Override
     public CompletableFuture<Response<Movie>> getMovieDetails(Integer IMDB_id) {
-        return CompletableFuture.supplyAsync(()-> new Response<>(Status.SUCCESS, new Movie(null, null, null, null, null)));
+        return CompletableFuture.supplyAsync(()-> new Response<>(Status.SUCCESS, Movie.builder().build()));
     }
 }
