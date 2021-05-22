@@ -102,7 +102,8 @@ public class MovieRedditServiceImpl implements MovieRedditService{
         Optional<Subreddit> optionalSubreddit = subredditRepository.findSubredditByMovie_id(IMDB_id);
 
         if(optionalSubreddit.isEmpty()){
-            Subreddit newSubreddit = new Subreddit(IMDB_id);
+            Subreddit newSubreddit = Subreddit.builder().build();
+            newSubreddit.setSubreddit_id(IMDB_id);
             Subreddit savedSubreddit = subredditRepository.save(newSubreddit);
 
             return MedditInfo.builder()

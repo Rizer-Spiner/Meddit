@@ -7,5 +7,6 @@ public enum Status {
     NOT_ALLOWED,
     NOT_FOUND,
     CONFLICT,
-    NOT_IMPLEMENTED;
+    INTERNAL_ERROR,
+    NOT_IMPLEMENTED
 }
