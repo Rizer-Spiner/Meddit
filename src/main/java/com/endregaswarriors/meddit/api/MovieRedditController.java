@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,12 +56,30 @@ public class MovieRedditController extends ControllerBase {
     public CompletableFuture<ResponseEntity<List<MovieSearchResult>>> searchMovies(@PathVariable(value = "queryParameter") String queryParameter) {
 
         return movieRedditService.searchForMovie(queryParameter).thenComposeAsync(s -> {
-            if (s.isEmpty() || s == null)
+            if (s.isEmpty())
                 return custom(204, null);
+            if (s == null)
+                return custom(500, null);
             else return success(s);
         });
     }
 
-    // TODO: 5/24/2021 searchInMovies 
+    @ApiOperation(value = "Get a list of movies matching with query parameter ", response = MovieSearchResult[].class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved search result"),
+            @ApiResponse(code = 204, message = "The query returns 0 results"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
+    @GetMapping("search/category/{queryParameter}")
+    public CompletableFuture<ResponseEntity<List<MovieSearchResult>>> searchCategoryOfMovies(@PathVariable String queryParameter)
+    {
+        return movieRedditService.searchMoviesByCategory(queryParameter).thenComposeAsync(s->{
+            if (s.isEmpty())
+                return custom(204, null);
+            if (s == null)
+                return custom(500, null);
+            else return success(s);
+        });
+    }
 
 }
