@@ -1,5 +1,6 @@
 package com.endregaswarriors.meddit.models.database;
 
+import com.sun.xml.bind.v2.TODO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +26,6 @@ public class Comment {
     private MedditUser user;
 
     private String content;
+    // TODO: 5/24/2021 TELL JUSTINAS YOU CHANGED THIS 
     private LocalDateTime postDate;
 }
