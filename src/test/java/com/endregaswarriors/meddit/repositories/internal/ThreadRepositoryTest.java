@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,21 @@ class ThreadRepositoryTest {
         Optional<Thread> databaseThread = threadRepository.findById(1L);
 
         assertTrue(databaseThread.isPresent());
+    }
+
+    @Test
+    void insertNewThread(){
+        Thread newThread = Thread.builder()
+                .subreddit_id(1)
+                .user(MedditUser.builder().user_id(2).build())
+                .title("AAAAAA")
+                .content("AAAAAAAAAAAAA")
+                .postdate(LocalDate.now())
+                .build();
+
+        Thread savedThread = threadRepository.save(newThread);
+
+        assertNotNull(savedThread);
     }
 
     @Test

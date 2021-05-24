@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class MedditUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer user_id;
 
     String firebase_id;
