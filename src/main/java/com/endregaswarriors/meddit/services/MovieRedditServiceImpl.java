@@ -50,6 +50,22 @@ public class MovieRedditServiceImpl implements MovieRedditService{
     }
 
     @Override
+    public CompletableFuture<List<MovieSearchResult>> searchMoviesByCategory(String category) {
+        return CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<ResponseEntity<List<MovieSearchResult>>> response = movieRepository.searchInMovies(category, 1);
+            try {
+                ResponseEntity<List<MovieSearchResult>> responseEntity = response.get(5, TimeUnit.SECONDS);
+                if(responseEntity.getStatusCode().is2xxSuccessful())
+                    return responseEntity.getBody();
+                else
+                    return new ArrayList<>();
+            } catch (Exception e) {
+                return new ArrayList<>();
+            }
+        });
+    }
+
+    @Override
     public CompletableFuture<Response<Movie>> getMovieDetails(Integer TMDB_id) {
         return CompletableFuture.supplyAsync(() -> {
             CompletableFuture<ResponseEntity<MovieDetails>> details = movieRepository.getMovieDetailsById(TMDB_id);
