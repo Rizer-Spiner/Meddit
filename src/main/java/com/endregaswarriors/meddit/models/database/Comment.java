@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long comment_id;
     @ManyToOne
     @JoinColumn(name = "thread_id")

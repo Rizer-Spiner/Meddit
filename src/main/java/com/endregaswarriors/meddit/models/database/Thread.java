@@ -13,11 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Thread {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long thread_id;
-    @ManyToOne
-    @JoinColumn(name = "subreddit_id")
-    private Subreddit subreddit;
+    private Integer subreddit_id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private MedditUser user;
