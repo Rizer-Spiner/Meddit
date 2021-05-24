@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteThread {
+public class VoteComment {
 
-    private Long threadId;
-    private Integer userId;
     private Integer subredditId;
+    private Long commentId;
+    private Integer userId;
+    private Boolean upvote;
 }

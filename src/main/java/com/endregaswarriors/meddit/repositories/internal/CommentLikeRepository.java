@@ -5,4 +5,5 @@ import com.endregaswarriors.meddit.models.database.keys.CommentLikePK;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CommentLikeRepository extends CrudRepository<CommentLike, CommentLikePK> {
+
 }

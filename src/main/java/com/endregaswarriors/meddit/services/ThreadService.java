@@ -4,6 +4,7 @@ import com.endregaswarriors.meddit.models.*;
 import com.endregaswarriors.meddit.models.api.AddThread;
 import com.endregaswarriors.meddit.models.api.DeleteThread;
 import com.endregaswarriors.meddit.models.api.GetThreads;
+import com.endregaswarriors.meddit.models.api.VoteThread;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
