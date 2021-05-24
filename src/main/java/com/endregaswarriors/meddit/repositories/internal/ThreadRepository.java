@@ -22,4 +22,10 @@ public interface ThreadRepository extends CrudRepository<Thread, Long> {
 
     @Query(value = "SELECT tl.like FROM public.threadlikes tl WHERE tl.user_id=:userID AND tl.thread_id =:threadID", nativeQuery = true)
     Optional<Boolean> getLikeForUserByThreadId(@Param("userID") Integer userId, @Param("threadID") Long threadId);
+
+    @Query(value = "INSERT INTO public.threadlikes tl VALUES (:threadID, :userID, true)", nativeQuery = true)
+    void upvoteThread(@Param("threadID") Long threadId, @Param("userID") Integer userId);
+
+    @Query(value = "DELETE FROM public.threadlikes tl WHERE tl.thread_id=:threadID AND tl.user_id=:userID", nativeQuery = true)
+    void downVoteThread(@Param("threadID") Long threadId,@Param("userID") Integer userId);
 }
