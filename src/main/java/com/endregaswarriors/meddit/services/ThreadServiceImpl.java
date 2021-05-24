@@ -105,7 +105,7 @@ public class ThreadServiceImpl implements ThreadService {
                                 .threadId(td.getThread_id())
                                 .threadTitle(td.getTitle())
                                 .threadContent(td.getContent())
-                                .upvoteCounter(likes.isEmpty()?0:likes.get())
+                                .upvoteCounter(likes.isEmpty() ? 0 : likes.get())
                                 .upvotedByUser(likedByUser.isPresent())
                                 .postDate(td.getPostdate())
                                 .build();
@@ -134,4 +134,20 @@ public class ThreadServiceImpl implements ThreadService {
 
     }
 
+    @Override
+    public CompletableFuture<Response<Void>> upVoteThread(VoteThread upvoteThread) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (!membersRepository.existsById(SubredditMemberPK.builder().
+                    subreddit_id(upvoteThread.getSubredditId()).
+                    user_id(upvoteThread.getUserId()).
+                    build()))
+                return new Response(Status.NOT_ALLOWED, null);
+            if (upvoteThread.getUpvote())
+                threadRepository.upvoteThread(upvoteThread.getThreadId(), upvoteThread.getUserId());
+            else threadRepository.downVoteThread(upvoteThread.getThreadId(), upvoteThread.getUserId());
+            return new Response<>(Status.SUCCESS, null);
+
+        });
+
+    }
 }

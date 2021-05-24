@@ -13,6 +13,5 @@ public interface ThreadService {
     CompletableFuture<Response<MedditThread>> addThread(AddThread newThread);
     CompletableFuture<Response<Void>> deleteThread(DeleteThread deleteThread);
     CompletableFuture<Response<List<MedditThread>>> getSubredditThreads(GetThreads getThreadsModel);
-
-
+    CompletableFuture<Response<Void>> upVoteThread(VoteThread upvoteThread);
 }

@@ -15,7 +15,6 @@ public class MedditUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer user_id;
-
     String firebase_id;
     String username;
 
