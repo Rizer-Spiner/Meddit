@@ -1,11 +1,17 @@
 package com.endregaswarriors.meddit.models.database;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Comment {
     @Id
@@ -19,5 +25,5 @@ public class Comment {
     private MedditUser user;
 
     private String content;
-    private LocalDate postDate;
+    private LocalDateTime postDate;
 }

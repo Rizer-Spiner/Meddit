@@ -11,12 +11,11 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedditUser {
-
+@Data
+public class SubComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer user_id;
-    String firebase_id;
-    String username;
+    private Long parent_id;
+    @Id
+    private Long comment_id;
 
 }

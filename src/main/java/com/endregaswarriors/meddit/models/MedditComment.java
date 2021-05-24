@@ -5,17 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
 public class MedditComment {
 
     private Long commentId;
-    private Long threadId;
     private MedditUser postedBy;
     private String content;
     private Long upvoteCounter;
     private boolean upvotedByUser;
-    private LocalDate postDate;
+    private Long parentCommentId;
+    private LocalDateTime postDate;
 }

@@ -46,7 +46,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_findBySubredditId()
     {
-        Optional<List<Thread>> databaseThreads = threadRepository.findBySubredditId(1);
+        Optional<List<Thread>> databaseThreads = threadRepository.findBySubredditId(1, 1);
 
         assertTrue(databaseThreads.isPresent());
         assertTrue(databaseThreads.get().size()!=0);
