@@ -5,6 +5,7 @@ import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.api.AddThread;
 import com.endregaswarriors.meddit.models.api.DeleteThread;
 import com.endregaswarriors.meddit.models.api.GetThreads;
+import com.endregaswarriors.meddit.models.api.VoteThread;
 import com.endregaswarriors.meddit.models.database.Thread;
 import com.endregaswarriors.meddit.services.ThreadService;
 import io.swagger.annotations.Api;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -30,48 +32,44 @@ public class ThreadsController extends ControllerBase{
     @ApiOperation(value = "Create a new thread on a movie subreddit", response = MedditThread.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Thread successfully created"),
-            @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
+            @ApiResponse(code = 401, message = "The user is unauthorized to perform the action"),
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PostMapping("")
     public CompletableFuture<ResponseEntity<MedditThread>> createThread(@RequestBody AddThread newThread){
-        return threadService.addThread(newThread).thenComposeAsync(medditThreadResponse -> {
-            if(medditThreadResponse.getStatus().equals(Status.SUCCESS))
-                return custom(201, medditThreadResponse.getModel());
-            else
-                return notFound();
-        });
+        return threadService.addThread(newThread).thenCompose(this::map);
     }
 
     @ApiOperation(value = "Delete a thread from a subreddit")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Thread successfully deleted"),
-            @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
+            @ApiResponse(code = 401, message = "The user is unauthorized to perform the action"),
             @ApiResponse(code = 500, message = "Internal error")
     })
     @DeleteMapping("")
     public CompletableFuture<ResponseEntity<Void>> deleteThread(@RequestBody DeleteThread deleteThread){
-        return threadService.deleteThread(deleteThread).thenComposeAsync(voidResponse -> {
-            if(voidResponse.getStatus().equals(Status.SUCCESS))
-                return custom(200);
-            else
-                return notFound();
-        });
+        return threadService.deleteThread(deleteThread).thenCompose(this::map);
     }
 
-    @ApiOperation(value = "Get the threads for a subreddit")
+    @ApiOperation(value = "Get the threads for a subreddit", response = MedditThread[].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Threads successfully received"),
-            @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
+            @ApiResponse(code = 204, message = "The query returned 0 results"),
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("")
-    public CompletableFuture<ResponseEntity<Void>> getThreads(@RequestBody GetThreads getThreadsModel){
-        return threadService.getSubredditThreads(getThreadsModel).thenComposeAsync(listResponse -> {
-            if(listResponse.getStatus().equals(Status.SUCCESS))
-                return custom(200);
-            else
-                return notFound();
-        });
+    public CompletableFuture<ResponseEntity<List<MedditThread>>> getThreads(@RequestBody GetThreads getThreadsModel){
+        return threadService.getSubredditThreads(getThreadsModel).thenCompose(this::map);
+    }
+
+    @ApiOperation(value = "Upvote or downVote a subreddit")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Thread successfully created"),
+            @ApiResponse(code = 401, message = "The user is unauthorized to perform the action"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
+    @PostMapping("")
+    public CompletableFuture<ResponseEntity<Void>> upvoteThread(@RequestBody VoteThread voteThread){
+        return threadService.upVoteThread(voteThread).thenCompose(this::map);
     }
 }
