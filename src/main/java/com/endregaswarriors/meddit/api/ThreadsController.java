@@ -68,7 +68,7 @@ public class ThreadsController extends ControllerBase{
             @ApiResponse(code = 401, message = "The user is unauthorized to perform the action"),
             @ApiResponse(code = 500, message = "Internal error")
     })
-    @PostMapping("")
+    @PatchMapping("")
     public CompletableFuture<ResponseEntity<Void>> upvoteThread(@RequestBody VoteThread voteThread){
         return threadService.upVoteThread(voteThread).thenCompose(this::map);
     }
