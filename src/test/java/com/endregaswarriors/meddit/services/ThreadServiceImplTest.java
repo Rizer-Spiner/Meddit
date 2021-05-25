@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
@@ -27,22 +28,22 @@ import static org.junit.Assert.*;
 @AutoConfigureMockMvc
 public class ThreadServiceImplTest {
 
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
+//    @Rule
+//    public MockitoRule rule = MockitoJUnit.rule();
+    //    @Autowired
+//    ThreadRepository threadRepository;
+//    @Autowired
+//    SubredditMembersRepository membersRepository;
     @Autowired
-    ThreadRepository threadRepository;
-    @Autowired
-    SubredditMembersRepository membersRepository;
-
-    ThreadService subject;
-
-    @BeforeAll
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        System.out.println(threadRepository != null);
-        System.out.println(membersRepository != null);
-        subject = new ThreadServiceImpl(threadRepository, membersRepository);
-    }
+    ThreadServiceImpl subject;
+//
+//    @BeforeAll
+//    public void setUp() {
+//        MockitoAnnotations.initMocks(this);
+////        System.out.println(threadRepository != null);
+////        System.out.println(membersRepository != null);
+////        subject = new ThreadServiceImpl(threadRepository, membersRepository);
+//    }
 
     @Test
     public void addThread_Success() throws ExecutionException, InterruptedException {

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +23,8 @@ class ThreadRepositoryTest {
 
     @Autowired
     ThreadRepository threadRepository;
+    @Autowired
+    TheadLikesRepository threadLikesRepository;
 
     @Test
     void get(){
@@ -46,12 +51,13 @@ class ThreadRepositoryTest {
     @Test
     void integration_findBySubredditId()
     {
-        Optional<List<Thread>> databaseThreads = threadRepository.findBySubredditId(1, 1);
+        Page<Thread> databaseThreads = threadRepository.findAllBySubreddit_id(1, PageRequest.of(0, 5, Sort.unsorted()));
 
-        assertTrue(databaseThreads.isPresent());
-        assertTrue(databaseThreads.get().size()!=0);
-        System.out.println(databaseThreads.get().size());
-        List<Thread> threads = databaseThreads.get();
+        assertTrue(!databaseThreads.isEmpty());
+        assertTrue(databaseThreads.getTotalElements()!=0);
+        System.out.println(databaseThreads.getTotalElements());
+        List<Thread> threads = databaseThreads.getContent();
+        System.out.println(threads.size());
         for (Thread t: threads) {
             System.out.println(t.getTitle());
         }
@@ -61,7 +67,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikesByThreadId()
     {
-        Optional<Long> likes = threadRepository.getLikesByThreadId(1L);
+        Optional<Long> likes = threadLikesRepository.getLikesByThread_id(1L);
 
         assertTrue(likes.isPresent());
         System.out.println(likes.get());
@@ -70,7 +76,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikeForUserByThreadIdFalse()
     {
-        Optional<Boolean> like = threadRepository.getLikeForUserByThreadId(1, 1L);
+        Optional<Boolean> like = threadLikesRepository.getLikeForUserByThreadId(1, 1L);
 
         assertTrue(like.isPresent());
         System.out.println(like.get());
@@ -79,7 +85,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikeForUserByThreadIdTrue()
     {
-        Optional<Boolean> like = threadRepository.getLikeForUserByThreadId(2, 1L);
+        Optional<Boolean> like = threadLikesRepository.getLikeForUserByThreadId(2, 1L);
 
         assertTrue(like.isPresent());
         System.out.println(like.get());
@@ -88,7 +94,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikeForUserNotFound()
     {
-        Optional<Boolean> like = threadRepository.getLikeForUserByThreadId(2, 2L);
+        Optional<Boolean> like = threadLikesRepository.getLikeForUserByThreadId(2, 2L);
 
         assertTrue(like.isEmpty());
 

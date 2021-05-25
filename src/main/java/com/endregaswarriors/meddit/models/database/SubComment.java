@@ -13,9 +13,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 public class SubComment {
-    @Id
+
+    @EmbeddedId
     private Long parent_id;
-    @Id
     private Long comment_id;
 
 }

@@ -23,6 +23,5 @@ public class Thread {
     private MedditUser user;
     private String title;
     private String content;
-    // TODO: 5/22/2021 ask Justinas if LocalDateTime if ok
     private LocalDateTime postdate;
 }
