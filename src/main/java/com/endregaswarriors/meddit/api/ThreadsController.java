@@ -64,7 +64,7 @@ public class ThreadsController extends ControllerBase{
 
     @ApiOperation(value = "Upvote or downVote a subreddit")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Thread successfully created"),
+            @ApiResponse(code = 200, message = "Thread successfully updated"),
             @ApiResponse(code = 401, message = "The user is unauthorized to perform the action"),
             @ApiResponse(code = 500, message = "Internal error")
     })

@@ -1,5 +1,6 @@
 package com.endregaswarriors.meddit.services;
 
+import com.endregaswarriors.meddit.models.CommentSection;
 import com.endregaswarriors.meddit.models.MedditComment;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
@@ -50,12 +51,15 @@ public class CommentServiceImpl implements CommentService {
         return CompletableFuture.supplyAsync(() -> {
 
             Page<Comment> commentListOptional = commentRepository.findAllByThread_id(
-                    getComments.getThreadId(), PageRequest.of(getComments.getPage(),100, Sort.unsorted()));
+                    getComments.getThreadId(), PageRequest.of(getComments.getPage(),100));
 
             if (commentListOptional.isEmpty())
                 return new Response<>(Status.NO_CONTENT);
             else {
-                CommentSection commentSection = CommentSection.builder().build();
+                CommentSection commentSection = CommentSection.builder()
+                        .threadID(getComments.getThreadId())
+                        .commentList(new ArrayList<>())
+                        .build();
                 commentSection.setThreadID(getComments.getThreadId());
                 List<Comment> comments = commentListOptional.getContent();
                 List<CompletableFuture<MedditComment>> futures = new ArrayList<>();
@@ -74,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
                                 .upvoteCounter(likes.isEmpty() ? 0 : likes.get())
                                 .upvotedByUser(likedByUser.isPresent())
                                 .parentCommentId(commentParent.orElse(-1L))
-                                .postDate(ct.getPostDate())
+                                .postDate(ct.getPostdate())
                                 .build();
                     });
                     futures.add(cCF);
@@ -109,7 +113,7 @@ public class CommentServiceImpl implements CommentService {
 
             Comment newCt = commentRepository.save(Comment.builder()
                     .content(addComment.getContent())
-                    .postDate(LocalDateTime.now())
+                    .postdate(LocalDateTime.now())
                     .thread_id(addComment.getThreadId())
                     .user(MedditUser.builder().user_id(addComment.getUserId()).build())
                     .build());
@@ -128,7 +132,7 @@ public class CommentServiceImpl implements CommentService {
                     .upvotedByUser(false)
                     .postedBy(newCt.getUser())
                     .content(newCt.getContent())
-                    .postDate(newCt.getPostDate())
+                    .postDate(newCt.getPostdate())
                     .build());
         });
     }

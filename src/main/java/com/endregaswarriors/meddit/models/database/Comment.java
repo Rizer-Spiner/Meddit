@@ -22,7 +22,6 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private MedditUser user;
-
     private String content;
-    private LocalDateTime postDate;
+    private LocalDateTime postdate;
 }
