@@ -6,6 +6,7 @@ import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.api.AddThread;
 import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
+import com.endregaswarriors.meddit.repositories.internal.TheadLikesRepository;
 import com.endregaswarriors.meddit.repositories.internal.ThreadRepository;
 
 import org.junit.Rule;
@@ -28,26 +29,17 @@ import static org.junit.Assert.*;
 @AutoConfigureMockMvc
 public class ThreadServiceImplTest {
 
-//    @Rule
-//    public MockitoRule rule = MockitoJUnit.rule();
-    //    @Autowired
-//    ThreadRepository threadRepository;
-//    @Autowired
-//    SubredditMembersRepository membersRepository;
     @Autowired
-    ThreadServiceImpl subject;
-//
-//    @BeforeAll
-//    public void setUp() {
-//        MockitoAnnotations.initMocks(this);
-////        System.out.println(threadRepository != null);
-////        System.out.println(membersRepository != null);
-////        subject = new ThreadServiceImpl(threadRepository, membersRepository);
-//    }
+    ThreadRepository threadRepository;
+    @Autowired
+    TheadLikesRepository threadLikesRepository;
+    @Autowired
+    SubredditMembersRepository membersRepository;
 
     @Test
     public void addThread_Success() throws ExecutionException, InterruptedException {
 
+        ThreadService subject = new ThreadServiceImpl(threadRepository, threadLikesRepository,membersRepository);
         AddThread addThread = AddThread.builder()
                 .subredditId(1)
                 .threadTitle("This is a new thread")
