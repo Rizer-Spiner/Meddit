@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ThreadRepository extends CrudRepository<Thread, Long> {
 
-    @Query(" FROM Thread td WHERE td.subreddit.subreddit_id=:subredditID")
+    @Query(" FROM Thread td WHERE td.subreddit_id=:subredditID")
     Optional<List<Thread>> findBySubredditId(@Param("subredditID") Integer subredditId );
 
     // TODO: 5/23/2021 amend to work with Crud Syntax 

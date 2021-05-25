@@ -5,7 +5,6 @@ import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.api.AddThread;
 import com.endregaswarriors.meddit.models.api.DeleteThread;
 import com.endregaswarriors.meddit.models.api.GetThreads;
-import com.endregaswarriors.meddit.models.database.Thread;
 import com.endregaswarriors.meddit.services.ThreadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +13,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -65,11 +65,11 @@ public class ThreadsController extends ControllerBase{
             @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
             @ApiResponse(code = 500, message = "Internal error")
     })
-    @DeleteMapping("")
-    public CompletableFuture<ResponseEntity<Void>> getThreads(@RequestBody GetThreads getThreadsModel){
+    @GetMapping("")
+    public CompletableFuture<ResponseEntity<List<MedditThread>>> getThreads(@RequestBody GetThreads getThreadsModel){
         return threadService.getSubredditThreads(getThreadsModel).thenComposeAsync(listResponse -> {
             if(listResponse.getStatus().equals(Status.SUCCESS))
-                return custom(200);
+                return custom(200, listResponse.getModel());
             else
                 return notFound();
         });

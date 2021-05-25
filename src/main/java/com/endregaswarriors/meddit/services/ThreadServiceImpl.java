@@ -47,7 +47,7 @@ public class ThreadServiceImpl implements ThreadService {
                     build()))
                 return new Response<>(Status.NOT_ALLOWED, null);
             Thread newTd = threadRepository.save(Thread.builder()
-                    .subreddit(Subreddit.builder().subreddit_id(newThread.getSubredditId()).build())
+                    .subreddit_id(newThread.getSubredditId())
                     .user(MedditUser.builder().user_id(newThread.getPostedByUserId()).build())
                     .title(newThread.getThreadTitle())
                     .content(newThread.getThreadContent())
