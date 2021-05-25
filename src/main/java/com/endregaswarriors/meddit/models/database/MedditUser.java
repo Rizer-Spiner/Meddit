@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedditUser {

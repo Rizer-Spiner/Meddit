@@ -121,7 +121,7 @@ public class CommentServiceImpl implements CommentService {
                         .parent_id(addComment.getPreviousCommentId()).build());
             }
 
-            return new Response<>(Status.SUCCESS, MedditComment.builder()
+            return new Response<>(Status.CREATED, MedditComment.builder()
                     .parentCommentId(addComment.getPreviousCommentId())
                     .commentId(newCt.getComment_id())
                     .upvoteCounter(0L)

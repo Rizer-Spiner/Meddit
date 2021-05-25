@@ -59,7 +59,7 @@ class ThreadRepositoryTest {
         List<Thread> threads = databaseThreads.getContent();
         System.out.println(threads.size());
         for (Thread t: threads) {
-            System.out.println(t.getTitle());
+            System.out.println(t.getUser().getUser_id());
         }
 
     }

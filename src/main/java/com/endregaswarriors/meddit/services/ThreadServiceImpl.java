@@ -59,7 +59,7 @@ public class ThreadServiceImpl implements ThreadService {
                     .content(newThread.getThreadContent())
                     .postdate(LocalDateTime.now()).build());
 
-            return new Response<>(Status.SUCCESS, MedditThread.builder()
+            return new Response<>(Status.CREATED, MedditThread.builder()
                     .threadId(newTd.getThread_id())
                     .threadTitle(newTd.getTitle())
                     .threadContent(newTd.getContent())

@@ -62,6 +62,8 @@ public abstract class ControllerBase {
         switch (response.getStatus()) {
             case SUCCESS:
                 return custom(200, response.getModel());
+            case CREATED:
+                return custom(201, response.getModel());
             case NO_CONTENT:
                 return custom(204);
             case UNAUTHORIZED:
