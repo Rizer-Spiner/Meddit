@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+
 public interface SubredditMembersRepository extends CrudRepository<SubredditMember, SubredditMemberPK> {
     @Query("SELECT count(members.subredditMemberPK.user_id) FROM SubredditMember members " +
             "JOIN Subreddit subreddit ON members.subredditMemberPK.subreddit_id=subreddit.subreddit_id " +

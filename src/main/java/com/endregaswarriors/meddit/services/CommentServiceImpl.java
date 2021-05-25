@@ -7,11 +7,14 @@ import com.endregaswarriors.meddit.models.api.*;
 import com.endregaswarriors.meddit.models.database.Comment;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.SubComment;
-import com.endregaswarriors.meddit.models.database.Thread;
 import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
+import com.endregaswarriors.meddit.repositories.internal.CommentLikeRepository;
 import com.endregaswarriors.meddit.repositories.internal.CommentRepository;
 import com.endregaswarriors.meddit.repositories.internal.SubCommmentRepository;
 import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,37 +31,41 @@ public class CommentServiceImpl implements CommentService {
 
     CommentRepository commentRepository;
     SubCommmentRepository subCommmentRepository;
+    CommentLikeRepository commentLikeRepository;
     SubredditMembersRepository membersRepository;
 
     public CommentServiceImpl(CommentRepository commentRepository
             , SubredditMembersRepository subredditMembersRepository
             , SubCommmentRepository subCommmentRepository
+            , CommentLikeRepository commentLikeRepository
                               ) {
         this.commentRepository = commentRepository;
         this.membersRepository = subredditMembersRepository;
         this.subCommmentRepository = subCommmentRepository;
+        this.commentLikeRepository = commentLikeRepository;
     }
 
     @Override
     public CompletableFuture<Response<CommentSection>> getCommentsForThread(GetComments getComments) {
         return CompletableFuture.supplyAsync(() -> {
-            Optional<List<Comment>> commentListOptional = commentRepository.findBySubredditId(
-                    getComments.getThreadId(), getComments.getPage());
+
+            Page<Comment> commentListOptional = commentRepository.findAllByThread_id(
+                    getComments.getThreadId(), PageRequest.of(getComments.getPage(),100, Sort.unsorted()));
 
             if (commentListOptional.isEmpty())
                 return new Response<>(Status.NO_CONTENT);
             else {
                 CommentSection commentSection = CommentSection.builder().build();
                 commentSection.setThreadID(getComments.getThreadId());
-                List<Comment> comments = commentListOptional.get();
+                List<Comment> comments = commentListOptional.getContent();
                 List<CompletableFuture<MedditComment>> futures = new ArrayList<>();
 
                 for (Comment ct : comments) {
                     CompletableFuture<MedditComment> cCF = CompletableFuture.supplyAsync(() -> {
-                        Optional<Long> likes = commentRepository.getLikesByCommentId(ct.getComment_id());
-                        Optional<Boolean> likedByUser = commentRepository.getLikeForUserByCommentId(
+                        Optional<Long> likes = commentLikeRepository.getLikesByCommentId(ct.getComment_id());
+                        Optional<Boolean> likedByUser = commentLikeRepository.getLikeForUserByCommentId(
                                 getComments.getUserId(), ct.getComment_id());
-                        Optional<Long> commentParent = commentRepository.getParentCommentId(ct.getComment_id());
+                        Optional<Long> commentParent = subCommmentRepository.getParentCommentId(ct.getComment_id());
 
                         return MedditComment.builder()
                                 .commentId(ct.getComment_id())
@@ -99,11 +106,11 @@ public class CommentServiceImpl implements CommentService {
                     user_id(addComment.getUserId()).
                     build()))
                 return new Response<>(Status.NOT_ALLOWED);
-            // TODO: 5/24/2021 ASK Justinas if i am able to save if the builders are not full args 
+
             Comment newCt = commentRepository.save(Comment.builder()
                     .content(addComment.getContent())
                     .postDate(LocalDateTime.now())
-                    .thread(Thread.builder().thread_id(addComment.getThreadId()).build())
+                    .thread_id(addComment.getThreadId())
                     .user(MedditUser.builder().user_id(addComment.getUserId()).build())
                     .build());
 
@@ -148,8 +155,8 @@ public class CommentServiceImpl implements CommentService {
                     build()))
                 return new Response(Status.NOT_ALLOWED);
             if (voteComment.getUpvote())
-                commentRepository.upvoteComment(voteComment.getCommentId(), voteComment.getUserId());
-            else commentRepository.downVoteComment(voteComment.getCommentId(), voteComment.getUserId());
+                commentLikeRepository.upvoteComment(voteComment.getCommentId(), voteComment.getUserId());
+            else commentLikeRepository.downVoteComment(voteComment.getCommentId(), voteComment.getUserId());
             return new Response<>(Status.SUCCESS);
 
         });

@@ -9,7 +9,10 @@ import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.Thread;
 import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
 import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
+import com.endregaswarriors.meddit.repositories.internal.TheadLikesRepository;
 import com.endregaswarriors.meddit.repositories.internal.ThreadRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
@@ -27,11 +30,14 @@ import java.util.concurrent.TimeoutException;
 public class ThreadServiceImpl implements ThreadService {
 
     ThreadRepository threadRepository;
+    TheadLikesRepository theadLikesRepository;
     SubredditMembersRepository membersRepository;
 
     public ThreadServiceImpl(ThreadRepository threadRepository,
+                             TheadLikesRepository theadLikesRepository,
                              SubredditMembersRepository membersRepository) {
         this.threadRepository = threadRepository;
+        this.theadLikesRepository = theadLikesRepository;
         this.membersRepository = membersRepository;
     }
 
@@ -87,19 +93,21 @@ public class ThreadServiceImpl implements ThreadService {
     public CompletableFuture<Response<List<MedditThread>>> getSubredditThreads(GetThreads getThreadsModel) {
 
         return CompletableFuture.supplyAsync(() -> {
-            Optional<List<Thread>> threadsListOptional = threadRepository.findBySubredditId(getThreadsModel.getSubredditId(), getThreadsModel.getPage());
+            Page<Thread> threadsListOptional = threadRepository.findAllBySubreddit_id(
+                    getThreadsModel.getSubredditId(),
+                    PageRequest.of(getThreadsModel.getPage(), 100));
 
             if (threadsListOptional.isEmpty())
                 return new Response<>(Status.NO_CONTENT, new ArrayList<>());
             else {
                 List<MedditThread> medditThreads = new ArrayList<>();
-                List<Thread> threads = threadsListOptional.get();
+                List<Thread> threads = threadsListOptional.getContent();
                 List<CompletableFuture<MedditThread>> futures = new ArrayList<>();
 
                 for (Thread td : threads) {
                     CompletableFuture<MedditThread> mCF = CompletableFuture.supplyAsync(() -> {
-                        Optional<Long> likes = threadRepository.getLikesByThreadId(td.getThread_id());
-                        Optional<Boolean> likedByUser = threadRepository.getLikeForUserByThreadId(getThreadsModel.getUserId(), td.getThread_id());
+                        Optional<Long> likes = theadLikesRepository.getLikesByThread_id(td.getThread_id());
+                        Optional<Boolean> likedByUser = theadLikesRepository.getLikeForUserByThreadId(getThreadsModel.getUserId(), td.getThread_id());
 
                         return MedditThread.builder()
                                 .threadId(td.getThread_id())
@@ -144,8 +152,8 @@ public class ThreadServiceImpl implements ThreadService {
                     build()))
                 return new Response(Status.NOT_ALLOWED);
             if (upvoteThread.getUpvote())
-                threadRepository.upvoteThread(upvoteThread.getThreadId(), upvoteThread.getUserId());
-            else threadRepository.downVoteThread(upvoteThread.getThreadId(), upvoteThread.getUserId());
+                theadLikesRepository.upvoteThread(upvoteThread.getThreadId(), upvoteThread.getUserId());
+            else theadLikesRepository.downVoteThread(upvoteThread.getThreadId(), upvoteThread.getUserId());
             return new Response<>(Status.SUCCESS);
 
         });
