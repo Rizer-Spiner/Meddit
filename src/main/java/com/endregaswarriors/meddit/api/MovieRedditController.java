@@ -57,9 +57,9 @@ public class MovieRedditController extends ControllerBase {
 
         return movieRedditService.searchForMovie(queryParameter).thenComposeAsync(s -> {
             if (s.isEmpty())
-                return custom(204, null);
+                return custom(204);
             if (s == null)
-                return custom(500, null);
+                return custom(500);
             else return success(s);
         });
     }
@@ -75,9 +75,9 @@ public class MovieRedditController extends ControllerBase {
     {
         return movieRedditService.searchMoviesByCategory(queryParameter).thenComposeAsync(s->{
             if (s.isEmpty())
-                return custom(204, null);
+                return custom(204);
             if (s == null)
-                return custom(500, null);
+                return custom(500);
             else return success(s);
         });
     }

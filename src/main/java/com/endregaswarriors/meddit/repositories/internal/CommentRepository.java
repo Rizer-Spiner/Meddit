@@ -15,6 +15,6 @@ import java.util.Optional;
 
 public interface CommentRepository extends PagingAndSortingRepository<Comment, Long> {
 
-    @Query("Select ct FROM Comment ct WHERE ct.thread_id=:threadID ")
+    @Query(" FROM Comment ct WHERE ct.thread_id=:threadID")
     Page<Comment> findAllByThread_id(@Param("threadID") Long threadId, Pageable page );
 }

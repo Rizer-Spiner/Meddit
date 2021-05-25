@@ -1,5 +1,6 @@
 package com.endregaswarriors.meddit.services;
 
+import com.endregaswarriors.meddit.models.CommentSection;
 import com.endregaswarriors.meddit.models.api.*;
 import com.endregaswarriors.meddit.models.MedditComment;
 import com.endregaswarriors.meddit.models.Response;
