@@ -107,6 +107,7 @@ public class MovieRedditServiceImpl implements MovieRedditService{
             Subreddit savedSubreddit = subredditRepository.save(newSubreddit);
 
             return MedditInfo.builder()
+                    .subreddit_id(savedSubreddit.getSubreddit_id())
                     .members(0)
                     .creationDate(savedSubreddit.getCreated())
                     .build();

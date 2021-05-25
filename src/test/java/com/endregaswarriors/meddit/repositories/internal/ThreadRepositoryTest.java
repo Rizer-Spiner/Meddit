@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,18 +29,54 @@ class ThreadRepositoryTest {
     }
 
     @Test
-    void insertNewThread(){
-        Thread newThread = Thread.builder()
-                .subreddit_id(1)
-                .user(MedditUser.builder().user_id(2).build())
-                .title("AAAAAA")
-                .content("AAAAAAAAAAAAA")
-                .postdate(LocalDate.now())
-                .build();
+    void integration_findBySubredditId()
+    {
+        Optional<List<Thread>> databaseThreads = threadRepository.findBySubredditId(1);
 
-        Thread savedThread = threadRepository.save(newThread);
+        assertTrue(databaseThreads.isPresent());
+        assertTrue(databaseThreads.get().size()!=0);
+        System.out.println(databaseThreads.get().size());
+        List<Thread> threads = databaseThreads.get();
+        for (Thread t: threads) {
+            System.out.println(t.getTitle());
+        }
 
-        assertNotNull(savedThread);
+    }
+
+    @Test
+    void integration_getLikesByThreadId()
+    {
+        Optional<Long> likes = threadRepository.getLikesByThreadId(1L);
+
+        assertTrue(likes.isPresent());
+        System.out.println(likes.get());
+    }
+
+    @Test
+    void integration_getLikeForUserByThreadIdFalse()
+    {
+        Optional<Boolean> like = threadRepository.getLikeForUserByThreadId(1, 1L);
+
+        assertTrue(like.isPresent());
+        System.out.println(like.get());
+    }
+
+    @Test
+    void integration_getLikeForUserByThreadIdTrue()
+    {
+        Optional<Boolean> like = threadRepository.getLikeForUserByThreadId(2, 1L);
+
+        assertTrue(like.isPresent());
+        System.out.println(like.get());
+    }
+
+    @Test
+    void integration_getLikeForUserNotFound()
+    {
+        Optional<Boolean> like = threadRepository.getLikeForUserByThreadId(2, 2L);
+
+        assertTrue(like.isEmpty());
+
     }
 
 }

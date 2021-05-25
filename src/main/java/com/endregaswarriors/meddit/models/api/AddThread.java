@@ -1,4 +1,4 @@
-package com.endregaswarriors.meddit.models;
+package com.endregaswarriors.meddit.models.api;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class AddThread {
     private Integer subredditId;
-    private String postedByUserId;
+    private Integer postedByUserId;
     private String threadTitle;
     private String threadContent;
 }
