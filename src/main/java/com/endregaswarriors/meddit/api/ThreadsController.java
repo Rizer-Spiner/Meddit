@@ -1,7 +1,10 @@
 package com.endregaswarriors.meddit.api;
 
-import com.endregaswarriors.meddit.models.AddThread;
+import com.endregaswarriors.meddit.models.MedditThread;
 import com.endregaswarriors.meddit.models.Status;
+import com.endregaswarriors.meddit.models.api.AddThread;
+import com.endregaswarriors.meddit.models.api.DeleteThread;
+import com.endregaswarriors.meddit.models.api.GetThreads;
 import com.endregaswarriors.meddit.models.database.Thread;
 import com.endregaswarriors.meddit.services.ThreadService;
 import io.swagger.annotations.Api;
@@ -24,17 +27,49 @@ public class ThreadsController extends ControllerBase{
         this.threadService = threadService;
     }
 
-    @ApiOperation(value = "Create a new thread on a movie subreddit", response = Thread.class)
+    @ApiOperation(value = "Create a new thread on a movie subreddit", response = MedditThread.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Thread successfully created"),
             @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PostMapping("")
-    public CompletableFuture<ResponseEntity<Thread>> createThread(@RequestBody AddThread newThread){
-        return threadService.addThread(newThread).thenComposeAsync(voidResponse -> {
+    public CompletableFuture<ResponseEntity<MedditThread>> createThread(@RequestBody AddThread newThread){
+        return threadService.addThread(newThread).thenComposeAsync(medditThreadResponse -> {
+            if(medditThreadResponse.getStatus().equals(Status.SUCCESS))
+                return custom(201, medditThreadResponse.getModel());
+            else
+                return notFound();
+        });
+    }
+
+    @ApiOperation(value = "Delete a thread from a subreddit")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Thread successfully deleted"),
+            @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
+    @DeleteMapping("")
+    public CompletableFuture<ResponseEntity<Void>> deleteThread(@RequestBody DeleteThread deleteThread){
+        return threadService.deleteThread(deleteThread).thenComposeAsync(voidResponse -> {
             if(voidResponse.getStatus().equals(Status.SUCCESS))
-                return custom(201);
+                return custom(200);
+            else
+                return notFound();
+        });
+    }
+
+    @ApiOperation(value = "Get the threads for a subreddit")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Threads successfully received"),
+            @ApiResponse(code = 404, message = "The subreddit by the id was not found"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
+    @DeleteMapping("")
+    public CompletableFuture<ResponseEntity<Void>> getThreads(@RequestBody GetThreads getThreadsModel){
+        return threadService.getSubredditThreads(getThreadsModel).thenComposeAsync(listResponse -> {
+            if(listResponse.getStatus().equals(Status.SUCCESS))
+                return custom(200);
             else
                 return notFound();
         });
