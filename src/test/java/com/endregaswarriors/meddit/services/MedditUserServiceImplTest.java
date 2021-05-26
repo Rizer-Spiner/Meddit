@@ -6,15 +6,19 @@ import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.SubredditMember;
+import com.endregaswarriors.meddit.models.database.TopMovieList;
 import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
 import com.endregaswarriors.meddit.repositories.internal.MedditUserRepository;
 import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
+import com.endregaswarriors.meddit.repositories.internal.TopMovieListRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -28,13 +32,15 @@ class MedditUserServiceImplTest {
     MedditUserRepository medditUserRepository;
     @Mock
     SubredditMembersRepository membersRepository;
+    @Mock
+    TopMovieListRepository topMovieListRepository;
 
     MedditUserService medditUserService;
 
     @BeforeEach
     public void setup(){
         MockitoAnnotations.initMocks(this);
-        medditUserService = new MedditUserServiceImpl(medditUserRepository, membersRepository);
+        medditUserService = new MedditUserServiceImpl(medditUserRepository, membersRepository, topMovieListRepository);
     }
 
     @Test
@@ -130,6 +136,35 @@ class MedditUserServiceImplTest {
         CompletableFuture<Response<Void>> responseCompletableFuture = medditUserService.leaveSubreddit(1, 1);
         Response<Void> voidResponse = responseCompletableFuture.get();
         assertEquals(Status.SUCCESS, voidResponse.getStatus());
+    }
+
+    @Test
+    public void addFavoriteMovieSubreddit_0movies() throws ExecutionException, InterruptedException {
+        Mockito.when(topMovieListRepository.save(any(TopMovieList.class)))
+                .thenReturn(TopMovieList.builder().subreddit1_id(1).build());
+
+        CompletableFuture<Response<TopMovieList>> responseCompletableFuture =
+                medditUserService.addFavoriteMovieSubreddit(1, new ArrayList<>());
+        Response<TopMovieList> topMovieListResponse = responseCompletableFuture.get();
+        assertEquals(Status.NO_CONTENT, topMovieListResponse.getStatus());
+    }
+
+    @Test
+    public void addFavoriteMovieSubreddit_coupleMovies() throws ExecutionException, InterruptedException {
+        TopMovieList databaseList = TopMovieList.builder()
+                .user_id(1).subreddit1_id(11).subreddit2_id(12)
+                .subreddit3_id(13).subreddit4_id(14).build();
+        Mockito.when(topMovieListRepository.save(any(TopMovieList.class)))
+                .thenReturn(databaseList);
+
+        CompletableFuture<Response<TopMovieList>> responseCompletableFuture =
+                medditUserService.addFavoriteMovieSubreddit(1, new ArrayList<>(Arrays.asList(11, 12, 13, 14)));
+        Response<TopMovieList> topMovieListResponse = responseCompletableFuture.get();
+        assertEquals(Status.SUCCESS, topMovieListResponse.getStatus());
+        assertEquals(11, topMovieListResponse.getModel().getSubreddit1_id());
+        assertEquals(12, topMovieListResponse.getModel().getSubreddit2_id());
+        assertEquals(13, topMovieListResponse.getModel().getSubreddit3_id());
+        assertEquals(14, topMovieListResponse.getModel().getSubreddit4_id());
     }
 
 }
