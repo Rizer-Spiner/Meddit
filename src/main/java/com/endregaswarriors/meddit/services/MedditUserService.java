@@ -1,7 +1,7 @@
 package com.endregaswarriors.meddit.services;
 
-import com.endregaswarriors.meddit.models.LoginUser;
-import com.endregaswarriors.meddit.models.NewUser;
+import com.endregaswarriors.meddit.models.api.LoginUser;
+import com.endregaswarriors.meddit.models.api.NewUser;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 

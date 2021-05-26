@@ -44,7 +44,7 @@ public class UsersController extends ControllerBase{
             @ApiResponse(code = 401, message = " User is unauthorized due to failed login "),
             @ApiResponse(code = 500, message = "Internal error")
     })
-    @PostMapping("")
+    @GetMapping("")
     CompletableFuture<ResponseEntity<MedditUser>> loginUser(@RequestBody LoginUser loginUser)
     {
         return medditUserService.loginUser(loginUser).thenCompose(this::map);
