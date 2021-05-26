@@ -19,5 +19,8 @@ public class MedditUser {
     Integer user_id;
     String firebase_id;
     String username;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    TopMovieList topMovieList;
 
 }
