@@ -110,4 +110,26 @@ class MedditUserServiceImplTest {
         assertEquals(Status.SUCCESS, voidResponse.getStatus());
     }
 
+    @Test
+    public void leaveSubreddit_notInDatabase() throws ExecutionException, InterruptedException {
+        Mockito.when(membersRepository.findById(any(SubredditMemberPK.class)))
+                .thenReturn(Optional.empty());
+
+        CompletableFuture<Response<Void>> responseCompletableFuture = medditUserService.leaveSubreddit(1, 1);
+        Response<Void> voidResponse = responseCompletableFuture.get();
+        assertEquals(Status.NOT_FOUND, voidResponse.getStatus());
+    }
+
+    @Test
+    public void leaveSubreddit_removeFromDatabase() throws ExecutionException, InterruptedException {
+        Mockito.when(membersRepository.findById(any(SubredditMemberPK.class)))
+                .thenReturn(Optional.of(SubredditMember.builder()
+                        .subredditMemberPK(SubredditMemberPK.builder().subreddit_id(1).user_id(1).build())
+                        .build()));
+
+        CompletableFuture<Response<Void>> responseCompletableFuture = medditUserService.leaveSubreddit(1, 1);
+        Response<Void> voidResponse = responseCompletableFuture.get();
+        assertEquals(Status.SUCCESS, voidResponse.getStatus());
+    }
+
 }

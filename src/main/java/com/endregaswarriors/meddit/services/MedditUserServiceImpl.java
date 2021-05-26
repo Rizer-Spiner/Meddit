@@ -67,7 +67,14 @@ public class MedditUserServiceImpl implements MedditUserService {
 
     @Override
     public CompletableFuture<Response<Void>> leaveSubreddit(Integer subreddit_id, Integer user_id) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> {
+            SubredditMemberPK id = SubredditMemberPK.builder().subreddit_id(subreddit_id).user_id(user_id).build();
+            Optional<SubredditMember> databaseMember = membersRepository.findById(id);
+            if(databaseMember.isEmpty())
+                return new Response<>(Status.NOT_FOUND);
+            membersRepository.delete(databaseMember.get());
+            return new Response<>(Status.SUCCESS);
+        });
     }
 
     @Override
