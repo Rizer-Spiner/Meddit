@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JoinSubreddit {
 
-    private Long threadId;
+    private Integer threadId;
     private Integer userId;
     private boolean join;
 }
