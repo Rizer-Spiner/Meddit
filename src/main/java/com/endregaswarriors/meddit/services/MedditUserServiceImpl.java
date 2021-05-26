@@ -31,13 +31,17 @@ public class MedditUserServiceImpl implements MedditUserService {
                     .firebase_id(newUser.getFirebase_id())
                     .username(newUser.getUsername())
                     .build();
-            return new Response<MedditUser>(Status.SUCCESS, medditUserRepository.save(userToSave));
+            return new Response<>(Status.SUCCESS, medditUserRepository.save(userToSave));
         });
     }
 
     @Override
     public CompletableFuture<Response<MedditUser>> loginUser(LoginUser loginUser) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> {
+            Optional<MedditUser> optionalMedditUser = medditUserRepository.login(loginUser.getFirebase_id(), loginUser.getUsername());
+
+            return optionalMedditUser.map(medditUser -> new Response<>(Status.SUCCESS, medditUser)).orElseGet(() -> new Response<>(Status.NOT_FOUND));
+        });
     }
 
     @Override

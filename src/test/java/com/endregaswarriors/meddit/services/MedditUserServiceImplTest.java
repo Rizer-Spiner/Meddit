@@ -1,5 +1,6 @@
 package com.endregaswarriors.meddit.services;
 
+import com.endregaswarriors.meddit.models.LoginUser;
 import com.endregaswarriors.meddit.models.NewUser;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
@@ -53,6 +54,30 @@ class MedditUserServiceImplTest {
 
         CompletableFuture<Response<MedditUser>> responseCompletableFuture = medditUserService.signUserIn(
                 NewUser.builder().username("user").firebase_id("123").build());
+        Response<MedditUser> medditUserResponse = responseCompletableFuture.get();
+        assertEquals(Status.SUCCESS, medditUserResponse.getStatus());
+        assertEquals(user, medditUserResponse.getModel());
+    }
+
+    @Test
+    public void loginUser_notFound() throws ExecutionException, InterruptedException {
+        Mockito.when(medditUserRepository.login(anyString(), anyString()))
+                .thenReturn(Optional.empty());
+
+        CompletableFuture<Response<MedditUser>> responseCompletableFuture = medditUserService.loginUser(
+                LoginUser.builder().firebase_id("123").username("username").build());
+        Response<MedditUser> medditUserResponse = responseCompletableFuture.get();
+        assertEquals(Status.NOT_FOUND, medditUserResponse.getStatus());
+    }
+
+    @Test
+    public void loginUser_found() throws ExecutionException, InterruptedException {
+        MedditUser user = MedditUser.builder().user_id(1).firebase_id("123").username("user").build();
+        Mockito.when(medditUserRepository.login(anyString(), anyString()))
+                .thenReturn(Optional.of(user));
+
+        CompletableFuture<Response<MedditUser>> responseCompletableFuture = medditUserService.loginUser(
+                LoginUser.builder().firebase_id("123").username("username").build());
         Response<MedditUser> medditUserResponse = responseCompletableFuture.get();
         assertEquals(Status.SUCCESS, medditUserResponse.getStatus());
         assertEquals(user, medditUserResponse.getModel());
