@@ -5,7 +5,10 @@ import com.endregaswarriors.meddit.models.NewUser;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.database.MedditUser;
+import com.endregaswarriors.meddit.models.database.SubredditMember;
+import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
 import com.endregaswarriors.meddit.repositories.internal.MedditUserRepository;
+import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -23,13 +26,15 @@ class MedditUserServiceImplTest {
 
     @Mock
     MedditUserRepository medditUserRepository;
+    @Mock
+    SubredditMembersRepository membersRepository;
 
     MedditUserService medditUserService;
 
     @BeforeEach
     public void setup(){
         MockitoAnnotations.initMocks(this);
-        medditUserService = new MedditUserServiceImpl(medditUserRepository);
+        medditUserService = new MedditUserServiceImpl(medditUserRepository, membersRepository);
     }
 
     @Test
@@ -81,6 +86,28 @@ class MedditUserServiceImplTest {
         Response<MedditUser> medditUserResponse = responseCompletableFuture.get();
         assertEquals(Status.SUCCESS, medditUserResponse.getStatus());
         assertEquals(user, medditUserResponse.getModel());
+    }
+
+    @Test
+    public void joinSubreddit_alreadyInsideDatabase() throws ExecutionException, InterruptedException {
+        Mockito.when(membersRepository.save(any(SubredditMember.class)))
+                .thenReturn(SubredditMember.builder().build());
+
+        CompletableFuture<Response<Void>> responseCompletableFuture = medditUserService.joinSubreddit(1, 1);
+        Response<Void> voidResponse = responseCompletableFuture.get();
+        assertEquals(Status.INTERNAL_ERROR, voidResponse.getStatus());
+    }
+
+    @Test
+    public void joinSubreddit_insertNewEntry() throws ExecutionException, InterruptedException {
+        Mockito.when(membersRepository.save(any(SubredditMember.class)))
+                .thenReturn(SubredditMember.builder()
+                        .subredditMemberPK(SubredditMemberPK.builder().subreddit_id(1).user_id(1).build())
+                        .build());
+
+        CompletableFuture<Response<Void>> responseCompletableFuture = medditUserService.joinSubreddit(1, 1);
+        Response<Void> voidResponse = responseCompletableFuture.get();
+        assertEquals(Status.SUCCESS, voidResponse.getStatus());
     }
 
 }

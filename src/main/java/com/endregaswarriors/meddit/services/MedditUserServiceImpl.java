@@ -5,7 +5,10 @@ import com.endregaswarriors.meddit.models.NewUser;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.database.MedditUser;
+import com.endregaswarriors.meddit.models.database.SubredditMember;
+import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
 import com.endregaswarriors.meddit.repositories.internal.MedditUserRepository;
+import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,9 +18,11 @@ import java.util.concurrent.CompletableFuture;
 public class MedditUserServiceImpl implements MedditUserService {
 
     private MedditUserRepository medditUserRepository;
+    private SubredditMembersRepository membersRepository;
 
-    public MedditUserServiceImpl(MedditUserRepository medditUserRepository) {
+    public MedditUserServiceImpl(MedditUserRepository medditUserRepository, SubredditMembersRepository membersRepository) {
         this.medditUserRepository = medditUserRepository;
+        this.membersRepository = membersRepository;
     }
 
     @Override
@@ -45,12 +50,23 @@ public class MedditUserServiceImpl implements MedditUserService {
     }
 
     @Override
-    public CompletableFuture<Response<Void>> joinSubreddit(Long thread_id, Integer user_id) {
-        return null;
+    public CompletableFuture<Response<Void>> joinSubreddit(Integer subreddit_id, Integer user_id) {
+        return CompletableFuture.supplyAsync(() -> {
+            SubredditMember newEntry = SubredditMember.builder()
+                    .subredditMemberPK(SubredditMemberPK.builder().subreddit_id(subreddit_id).user_id(user_id).build())
+                    .build();
+            SubredditMember databaseEntry = membersRepository.save(newEntry);
+            if(databaseEntry.getSubredditMemberPK() != null &&
+                    databaseEntry.getSubredditMemberPK().getSubreddit_id() != null &&
+                    databaseEntry.getSubredditMemberPK().getUser_id() != null)
+                return new Response<>(Status.SUCCESS);
+            else
+                return new Response<>(Status.INTERNAL_ERROR);
+        });
     }
 
     @Override
-    public CompletableFuture<Response<Void>> leaveSubreddit(Long thread_id, Integer user_id) {
+    public CompletableFuture<Response<Void>> leaveSubreddit(Integer subreddit_id, Integer user_id) {
         return null;
     }
 
