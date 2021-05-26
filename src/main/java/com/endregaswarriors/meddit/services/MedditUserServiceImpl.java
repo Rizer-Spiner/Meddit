@@ -76,14 +76,4 @@ public class MedditUserServiceImpl implements MedditUserService {
             return new Response<>(Status.SUCCESS);
         });
     }
-
-    @Override
-    public CompletableFuture<Response<Void>> upvoteThread(Long thread_id, Integer user_id, Boolean upvote) {
-        return null;
-    }
-
-    @Override
-    public CompletableFuture<Response<Void>> upvoteComment(Long comment_id, Integer user_id, Boolean upvote) {
-        return null;
-    }
 }
