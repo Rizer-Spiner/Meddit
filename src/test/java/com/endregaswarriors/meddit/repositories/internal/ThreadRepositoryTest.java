@@ -2,13 +2,13 @@ package com.endregaswarriors.meddit.repositories.internal;
 
 import com.endregaswarriors.meddit.MedditApplication;
 import com.endregaswarriors.meddit.models.database.MedditUser;
+import com.endregaswarriors.meddit.models.database.Subreddit;
 import com.endregaswarriors.meddit.models.database.Thread;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,21 +26,6 @@ class ThreadRepositoryTest {
         Optional<Thread> databaseThread = threadRepository.findById(1L);
 
         assertTrue(databaseThread.isPresent());
-    }
-
-    @Test
-    void insertNewThread(){
-        Thread newThread = Thread.builder()
-                .subreddit_id(1)
-                .user(MedditUser.builder().user_id(2).build())
-                .title("AAAAAA")
-                .content("AAAAAAAAAAAAA")
-                .postdate(LocalDateTime.now())
-                .build();
-
-        Thread savedThread = threadRepository.save(newThread);
-
-        assertNotNull(savedThread);
     }
 
     @Test
