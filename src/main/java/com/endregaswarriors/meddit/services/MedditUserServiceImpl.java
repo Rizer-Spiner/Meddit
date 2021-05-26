@@ -36,7 +36,7 @@ public class MedditUserServiceImpl implements MedditUserService {
                     .firebase_id(newUser.getFirebase_id())
                     .username(newUser.getUsername())
                     .build();
-            return new Response<>(Status.SUCCESS, medditUserRepository.save(userToSave));
+            return new Response<>(Status.CREATED, medditUserRepository.save(userToSave));
         });
     }
 
