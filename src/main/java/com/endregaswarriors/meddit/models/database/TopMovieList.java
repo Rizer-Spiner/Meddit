@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "topmovielist")
 @Data
 @Builder
 @NoArgsConstructor
