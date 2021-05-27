@@ -4,6 +4,7 @@ import com.endregaswarriors.meddit.models.api.LoginUser;
 import com.endregaswarriors.meddit.models.api.NewUser;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
+import com.endregaswarriors.meddit.models.api.UserTopMovies;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.SubredditMember;
 import com.endregaswarriors.meddit.models.database.TopMovieList;
@@ -144,7 +145,7 @@ class MedditUserServiceImplTest {
                 .thenReturn(TopMovieList.builder().subreddit1_id(1).build());
 
         CompletableFuture<Response<TopMovieList>> responseCompletableFuture =
-                medditUserService.addFavoriteMovieSubreddit(1, new ArrayList<>());
+                medditUserService.addFavoriteMovieSubreddit(UserTopMovies.builder().user_id(1).movieIds(new Integer[]{}).build());
         Response<TopMovieList> topMovieListResponse = responseCompletableFuture.get();
         assertEquals(Status.NO_CONTENT, topMovieListResponse.getStatus());
     }
@@ -158,7 +159,7 @@ class MedditUserServiceImplTest {
                 .thenReturn(databaseList);
 
         CompletableFuture<Response<TopMovieList>> responseCompletableFuture =
-                medditUserService.addFavoriteMovieSubreddit(1, new ArrayList<>(Arrays.asList(11, 12, 13, 14)));
+                medditUserService.addFavoriteMovieSubreddit(UserTopMovies.builder().user_id(1).movieIds(new Integer[]{11, 12, 13, 14}).build());
         Response<TopMovieList> topMovieListResponse = responseCompletableFuture.get();
         assertEquals(Status.SUCCESS, topMovieListResponse.getStatus());
         assertEquals(11, topMovieListResponse.getModel().getSubreddit1_id());

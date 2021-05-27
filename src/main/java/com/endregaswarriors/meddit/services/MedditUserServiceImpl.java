@@ -4,6 +4,7 @@ import com.endregaswarriors.meddit.models.api.LoginUser;
 import com.endregaswarriors.meddit.models.api.NewUser;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
+import com.endregaswarriors.meddit.models.api.UserTopMovies;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.SubredditMember;
 import com.endregaswarriors.meddit.models.database.TopMovieList;
@@ -83,33 +84,35 @@ public class MedditUserServiceImpl implements MedditUserService {
     }
 
     @Override
-    public CompletableFuture<Response<TopMovieList>> addFavoriteMovieSubreddit(Integer user_id, List<Integer> movieIds) {
+    public CompletableFuture<Response<TopMovieList>> addFavoriteMovieSubreddit(UserTopMovies topMovies) {
         return CompletableFuture.supplyAsync(() -> {
             TopMovieList movieList = TopMovieList.builder()
-                    .user_id(user_id)
+                    .user_id(topMovies.getUser_id())
                     .build();
-            if(movieIds.size() > 0){
-                switch (movieIds.size()) {
+
+            Integer[] idArray = topMovies.getMovieIds();
+            if(idArray.length > 0){
+                switch (idArray.length) {
                     case 10:
-                        movieList.setSubreddit10_id(movieIds.get(9));
+                        movieList.setSubreddit10_id(idArray[9]);
                     case 9:
-                        movieList.setSubreddit9_id(movieIds.get(8));
+                        movieList.setSubreddit9_id(idArray[8]);
                     case 8:
-                        movieList.setSubreddit8_id(movieIds.get(7));
+                        movieList.setSubreddit8_id(idArray[7]);
                     case 7:
-                        movieList.setSubreddit7_id(movieIds.get(6));
+                        movieList.setSubreddit7_id(idArray[6]);
                     case 6:
-                        movieList.setSubreddit6_id(movieIds.get(5));
+                        movieList.setSubreddit6_id(idArray[5]);
                     case 5:
-                        movieList.setSubreddit5_id(movieIds.get(4));
+                        movieList.setSubreddit5_id(idArray[4]);
                     case 4:
-                        movieList.setSubreddit4_id(movieIds.get(3));
+                        movieList.setSubreddit4_id(idArray[3]);
                     case 3:
-                        movieList.setSubreddit3_id(movieIds.get(2));
+                        movieList.setSubreddit3_id(idArray[2]);
                     case 2:
-                        movieList.setSubreddit2_id(movieIds.get(1));
+                        movieList.setSubreddit2_id(idArray[1]);
                     case 1:
-                        movieList.setSubreddit1_id(movieIds.get(0));
+                        movieList.setSubreddit1_id(idArray[0]);
                 }
                 return new Response<>(Status.SUCCESS, topMovieListRepository.save(movieList));
             } else

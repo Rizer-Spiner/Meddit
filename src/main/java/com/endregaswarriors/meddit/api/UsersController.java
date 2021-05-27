@@ -4,7 +4,9 @@ import com.endregaswarriors.meddit.models.MovieSearchResult;
 import com.endregaswarriors.meddit.models.api.JoinSubreddit;
 import com.endregaswarriors.meddit.models.api.LoginUser;
 import com.endregaswarriors.meddit.models.api.NewUser;
+import com.endregaswarriors.meddit.models.api.UserTopMovies;
 import com.endregaswarriors.meddit.models.database.MedditUser;
+import com.endregaswarriors.meddit.models.database.TopMovieList;
 import com.endregaswarriors.meddit.services.MedditUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -63,5 +65,15 @@ public class UsersController extends ControllerBase{
         else return medditUserService.leaveSubreddit(joinSubreddit.getThreadId(), joinSubreddit.getUserId()).thenCompose(this::map);
     }
 
+    @ApiOperation(value = "Save a users movie top list")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully updated users' top movie list"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
+    @PostMapping("/top")
+    CompletableFuture<ResponseEntity<TopMovieList>> saveTopList(@RequestBody UserTopMovies topMovies)
+    {
+        return medditUserService.addFavoriteMovieSubreddit(topMovies).thenCompose(this::map);
+    }
 
 }
