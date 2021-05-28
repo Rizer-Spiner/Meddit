@@ -118,7 +118,7 @@ class MovieRedditServiceImplTest {
     @Test
     public void getMovieDetails_movieRepositoryReturnFails() throws ExecutionException, InterruptedException {
         MovieDetails movieDetails = new MovieDetails(550, "tt0168495", "asdasd", "asdasd",
-                "/asdasd.jpg", LocalDate.now(), 125, "released", 8.8);
+                "/asdasd.jpg", LocalDate.now(), 125, "released", 6312,8.8);
         List<MovieVideo> movieVideos = new ArrayList<>();
         movieVideos.add(new MovieVideo("key", "name", "something.com"));
         List<PersonDetails> movieCast = new ArrayList<>();
@@ -147,7 +147,7 @@ class MovieRedditServiceImplTest {
     @Test
     public void getMovieDetails_movieDetailsDoNotContainIMDB_id() throws ExecutionException, InterruptedException {
         MovieDetails movieDetails = new MovieDetails(550, "null", "asdasd", "asdasd",
-                "/asdasd.jpg", LocalDate.now(), 125, "released", 8.8);
+                "/asdasd.jpg", LocalDate.now(), 125, "released", 432,8.8);
         List<MovieImage> movieImages = new ArrayList<>();
         movieImages.add(new MovieImage("/dasd", 300, 300, "EN"));
         movieImages.add(new MovieImage("path", 1080, 720, "FR"));
@@ -179,7 +179,7 @@ class MovieRedditServiceImplTest {
     @Test
     public void getMovieDetails_successfullyGetMovieDetails() throws ExecutionException, InterruptedException {
         MovieDetails movieDetails = new MovieDetails(550, "tt0168495", "asdasd", "asdasd",
-                "/asdasd.jpg", LocalDate.now(), 125, "released", 8.8);
+                "/asdasd.jpg", LocalDate.now(), 125, "released", 4232,8.8);
         List<MovieImage> movieImages = new ArrayList<>();
         movieImages.add(new MovieImage("/dasd", 300, 300, "EN"));
         movieImages.add(new MovieImage("path", 1080, 720, "FR"));

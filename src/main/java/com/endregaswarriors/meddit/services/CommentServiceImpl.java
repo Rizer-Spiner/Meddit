@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
         return CompletableFuture.supplyAsync(() -> {
 
             Page<Comment> commentListOptional = commentRepository.findAllByThread_id(
-                    getComments.getThreadId(), PageRequest.of(getComments.getPage(),100));
+                    getComments.getThreadId(), PageRequest.of(getComments.getPage(),20));
 
             if (commentListOptional.isEmpty())
                 return new Response<>(Status.NO_CONTENT);

@@ -19,6 +19,7 @@ public class MovieDetails {
     String status;
     @SerializedName(value = "vote_average")
     double rating;
+    int vote_count;
 
     public MovieDetails()
     {
@@ -26,7 +27,7 @@ public class MovieDetails {
     }
 
 
-    public MovieDetails(long id, String imdb_id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status, double rating) {
+    public MovieDetails(long id, String imdb_id, String title, String overview, String poster_path, LocalDate release_date, int runtime, String status,int vote_count, double rating) {
         this.id = id;
         this.imdb_id = imdb_id;
         this.title = title;
@@ -35,6 +36,7 @@ public class MovieDetails {
         this.release_date = release_date;
         this.runtime = runtime;
         this.status = status;
+        this.vote_count = vote_count;
         this.rating = rating;
     }
 
@@ -110,11 +112,19 @@ public class MovieDetails {
         this.imdb_id = imdb_id;
     }
 
+    public Integer getVote_count() {
+        return vote_count;
+    }
+
+    public void setVote_count(Integer vote_count) {
+        this.vote_count = vote_count;
+    }
+
     @Override
     public String toString() {
         return "MovieDetails{" +
                 "id=" + id +
-                ", imdb_id=" + imdb_id +
+                ", imdb_id='" + imdb_id + '\'' +
                 ", title='" + title + '\'' +
                 ", overview='" + overview + '\'' +
                 ", poster_path='" + poster_path + '\'' +
@@ -122,6 +132,7 @@ public class MovieDetails {
                 ", runtime=" + runtime +
                 ", status='" + status + '\'' +
                 ", rating=" + rating +
+                ", vote_count=" + vote_count +
                 '}';
     }
 }

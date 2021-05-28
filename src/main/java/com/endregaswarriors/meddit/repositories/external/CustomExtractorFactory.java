@@ -37,9 +37,10 @@ public class CustomExtractorFactory {
                 final int runtime = json.getAsJsonObject().get("runtime") == JsonNull.INSTANCE
                         ? 0
                         : json.getAsJsonObject().get("runtime").getAsInt();
+                final int vote_count = json.getAsJsonObject().get("vote_count").getAsInt();
 //final String poster_path = String.format("%s%s", ApiConstants.TMDB_POSTER_API_BASE_URL,
 //json.getAsJsonObject().get("poster_path").getAsString());
-                return new MovieDetails(id, imdb_id, title, overview, poster_path, release_date, runtime, status, vote_average);
+                return new MovieDetails(id, imdb_id, title, overview, poster_path, release_date, runtime, status,vote_count, vote_average);
 
             }).setDateFormat("yyyy-mm-dd");
 
