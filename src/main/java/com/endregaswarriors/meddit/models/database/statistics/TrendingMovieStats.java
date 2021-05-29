@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "trendingmoviestats")
 public class TrendingMovieStats {
 
     @EmbeddedId
