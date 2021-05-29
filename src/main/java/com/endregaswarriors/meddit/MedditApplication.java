@@ -23,13 +23,6 @@ import java.util.concurrent.ExecutionException;
 @SpringBootApplication
 public class MedditApplication {
 
-    @Autowired
-    static ThreadRepository threadRepository;
-    @Autowired
-    static TheadLikesRepository threadLikeRepository;
-    @Autowired
-    static SubredditMembersRepository subredditMembersRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(MedditApplication.class, args);
 
