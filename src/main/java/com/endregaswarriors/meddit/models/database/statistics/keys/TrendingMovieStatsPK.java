@@ -18,7 +18,7 @@ public class TrendingMovieStatsPK implements Serializable {
 
     private Integer subreddit_id;
     private Integer rank;
-    private LocalDate from;
-    private LocalDate to;
+    private LocalDate from_date;
+    private LocalDate to_date;
 
 }
