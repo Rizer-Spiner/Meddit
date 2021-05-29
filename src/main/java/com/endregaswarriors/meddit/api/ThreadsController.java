@@ -1,12 +1,10 @@
 package com.endregaswarriors.meddit.api;
 
 import com.endregaswarriors.meddit.models.MedditThread;
-import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.api.AddThread;
 import com.endregaswarriors.meddit.models.api.DeleteThread;
 import com.endregaswarriors.meddit.models.api.GetThreads;
 import com.endregaswarriors.meddit.models.api.VoteThread;
-import com.endregaswarriors.meddit.models.database.Thread;
 import com.endregaswarriors.meddit.services.ThreadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

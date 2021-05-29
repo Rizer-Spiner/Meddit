@@ -17,5 +17,6 @@ public interface MedditUserService {
     CompletableFuture<Response<Void>> joinSubreddit(Integer subreddit_id, Integer user_id);
     CompletableFuture<Response<Void>> leaveSubreddit(Integer subreddit_id, Integer user_id);
     CompletableFuture<Response<TopMovieList>> addFavoriteMovieSubreddit(UserTopMovies topMovies);
+    CompletableFuture<Response<TopMovieList>> getFavoriteMovieSubreddits(Integer user_id);
 
 }

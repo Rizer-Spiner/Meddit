@@ -17,7 +17,5 @@ public interface SubredditMembersRepository extends CrudRepository<SubredditMemb
             "WHERE subreddit.movie_id = :id")
     Integer countSubredditMembers(@Param("id") Integer IMDB_id);
 
-//    @Query("SELECT subMember FROM SubredditMember subMember WHERE subMember.subredditMemberPK.user_id = :id ")
-//    Optional<SubredditMember> findSubredditMemberBy_id(@Param("id") Integer id);
 
 }

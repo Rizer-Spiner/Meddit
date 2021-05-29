@@ -14,7 +14,7 @@ import com.endregaswarriors.meddit.repositories.internal.SubredditMembersReposit
 import com.endregaswarriors.meddit.repositories.internal.TopMovieListRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -118,5 +118,10 @@ public class MedditUserServiceImpl implements MedditUserService {
             } else
                 return new Response<>(Status.NO_CONTENT);
         });
+    }
+
+    @Override
+    public CompletableFuture<Response<TopMovieList>> getFavoriteMovieSubreddits(Integer user_id) {
+        return null;
     }
 }
