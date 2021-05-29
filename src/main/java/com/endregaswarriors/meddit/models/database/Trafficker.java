@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 @Builder
@@ -19,7 +17,4 @@ import javax.persistence.ManyToOne;
 public class Trafficker {
     @EmbeddedId
     private TraffickerPK traffickerPK;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private MedditUser user_id;
 }

@@ -20,8 +20,11 @@ public class TraffickerServiceImpl implements TraffickerService {
     @Override
     public void logTraffic(Integer subreddit_id, Integer user_id) {
         Trafficker trafficker = Trafficker.builder()
-                .traffickerPK(TraffickerPK.builder().subreddit_id(subreddit_id).timestamp(LocalDateTime.now()).build())
-                .user_id(MedditUser.builder().user_id(user_id).build())
+                .traffickerPK(TraffickerPK.builder()
+                        .subreddit_id(subreddit_id)
+                        .timestamp(LocalDateTime.now())
+                        .user_id(MedditUser.builder().user_id(user_id).build())
+                        .build())
                 .build();
 
         traffickerRepository.save(trafficker);

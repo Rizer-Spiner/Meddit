@@ -23,8 +23,11 @@ class TraffickerRepositoryTest {
     @Test
     public void insertSomeTrafficEntries(){
         Trafficker trafficker = Trafficker.builder()
-                .traffickerPK(TraffickerPK.builder().subreddit_id(1).timestamp(LocalDateTime.now()).build())
-                .user_id(MedditUser.builder().user_id(1).build())
+                .traffickerPK(TraffickerPK.builder()
+                        .subreddit_id(1)
+                        .timestamp(LocalDateTime.now())
+                        .user_id(MedditUser.builder().user_id(1).build())
+                        .build())
                 .build();
 
         Trafficker databaseTrafficker = traffickerRepository.save(trafficker);
