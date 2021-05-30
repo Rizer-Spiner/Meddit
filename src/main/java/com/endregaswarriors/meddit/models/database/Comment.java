@@ -1,23 +1,27 @@
 package com.endregaswarriors.meddit.models.database;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long comment_id;
-    @ManyToOne
-    @JoinColumn(name = "thread_id")
-    private Thread thread;
+    private Long thread_id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private MedditUser user;
-
     private String content;
-    private LocalDate postDate;
+    private LocalDateTime postdate;
 }

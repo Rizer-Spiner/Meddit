@@ -1,12 +1,18 @@
 package com.endregaswarriors.meddit.services;
 
-import com.endregaswarriors.meddit.models.AddThread;
-import com.endregaswarriors.meddit.models.Response;
+import com.endregaswarriors.meddit.models.*;
+import com.endregaswarriors.meddit.models.api.AddThread;
+import com.endregaswarriors.meddit.models.api.DeleteThread;
+import com.endregaswarriors.meddit.models.api.GetThreads;
+import com.endregaswarriors.meddit.models.api.VoteThread;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface ThreadService {
 
-    public CompletableFuture<Response<Void>> addThread(AddThread newThread);
-
+    CompletableFuture<Response<MedditThread>> addThread(AddThread newThread);
+    CompletableFuture<Response<Void>> deleteThread(DeleteThread deleteThread);
+    CompletableFuture<Response<List<MedditThread>>> getSubredditThreads(GetThreads getThreadsModel);
+    CompletableFuture<Response<Void>> upVoteThread(VoteThread upvoteThread);
 }
