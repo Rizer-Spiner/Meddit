@@ -7,7 +7,6 @@ import com.endregaswarriors.meddit.models.api.UserTopMovies;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.TopMovieList;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface MedditUserService {

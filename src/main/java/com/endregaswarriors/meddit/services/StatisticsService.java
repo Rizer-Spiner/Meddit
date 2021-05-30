@@ -6,11 +6,13 @@ import com.endregaswarriors.meddit.models.MovieTrendingReport;
 import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.TopMovie;
 import com.endregaswarriors.meddit.models.api.GetMovieFavoriteReport;
+import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Service
 public interface StatisticsService {
 
     CompletableFuture<Response<MovieTrendingReport>> getTrendingStatisticsForSubreddit(GetMovieTrendingReport getMovieTrendingReport);
