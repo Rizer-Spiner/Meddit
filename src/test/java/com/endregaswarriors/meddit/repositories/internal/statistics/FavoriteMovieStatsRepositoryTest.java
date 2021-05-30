@@ -32,7 +32,7 @@ class FavoriteMovieStatsRepositoryTest {
     @Test
     void findCurrentTop(){
         List<FavoriteMovieStats> favoriteMovieStats = favoriteMovieStatsRepository.findCurrentFavoriteTop(
-                LocalDate.now(),
+                LocalDate.of(2021, 05, 28),
                 PageRequest.of(0, 20));
 
         assertFalse(favoriteMovieStats.isEmpty());
