@@ -4,7 +4,7 @@ import com.endregaswarriors.meddit.models.MovieFavoriteReport;
 import com.endregaswarriors.meddit.models.MovieTrendingReport;
 import com.endregaswarriors.meddit.models.TopMovie;
 import com.endregaswarriors.meddit.models.api.GetMovieFavoriteReport;
-import com.endregaswarriors.meddit.models.api.GetMovieTrendingReport;
+import com.endregaswarriors.meddit.models.api.GetMovieReport;
 import com.endregaswarriors.meddit.services.StatisticsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,9 +56,9 @@ public class StatisticsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("/report/trending")
-    CompletableFuture<ResponseEntity<MovieTrendingReport>> getTrendingReport(@RequestBody GetMovieTrendingReport getMovieTrendingReport)
+    CompletableFuture<ResponseEntity<MovieTrendingReport>> getTrendingReport(@RequestBody GetMovieReport getMovieReport)
     {
-        return statisticsService.getTrendingStatisticsForSubreddit(getMovieTrendingReport).thenCompose(this::map);
+        return statisticsService.getTrendingStatisticsForSubreddit(getMovieReport).thenCompose(this::map);
     }
 
     @ApiOperation(value = "Get a report of a subreddit popularity based on the favorite performance on Meddit")
@@ -67,7 +67,7 @@ public class StatisticsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("/report/favorite")
-    CompletableFuture<ResponseEntity<MovieFavoriteReport>> getFavoriteReport(@RequestBody GetMovieFavoriteReport getMovieFavoriteReport)
+    CompletableFuture<ResponseEntity<MovieFavoriteReport>> getFavoriteReport(@RequestBody GetMovieReport getMovieFavoriteReport)
     {
         return statisticsService.getFavoriteStatisticsForSubreddit(getMovieFavoriteReport).thenCompose(this::map);
     }

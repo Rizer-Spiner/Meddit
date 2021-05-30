@@ -2,7 +2,7 @@ package com.endregaswarriors.meddit.services;
 
 import com.endregaswarriors.meddit.models.*;
 import com.endregaswarriors.meddit.models.api.GetMovieFavoriteReport;
-import com.endregaswarriors.meddit.models.api.GetMovieTrendingReport;
+import com.endregaswarriors.meddit.models.api.GetMovieReport;
 import com.endregaswarriors.meddit.models.database.statistics.FavoriteMovieStats;
 import com.endregaswarriors.meddit.models.database.statistics.TrendingMovieStats;
 import com.endregaswarriors.meddit.repositories.internal.statistics.FavoriteMovieStatsRepository;
@@ -27,12 +27,12 @@ public class StatisticsServiceImpl implements StatisticsService{
     }
 
     @Override
-    public CompletableFuture<Response<MovieTrendingReport>> getTrendingStatisticsForSubreddit(GetMovieTrendingReport getMovieTrendingReport) {
+    public CompletableFuture<Response<MovieTrendingReport>> getTrendingStatisticsForSubreddit(GetMovieReport getMovieReport) {
         return null;
     }
 
     @Override
-    public CompletableFuture<Response<MovieFavoriteReport>> getFavoriteStatisticsForSubreddit(GetMovieFavoriteReport getMovieFavoriteReport) {
+    public CompletableFuture<Response<MovieFavoriteReport>> getFavoriteStatisticsForSubreddit(GetMovieReport getMovieFavoriteReport) {
         return null;
     }
 
