@@ -75,4 +75,15 @@ public class UsersController extends ControllerBase {
         return medditUserService.addFavoriteMovieSubreddit(topMovies).thenCompose(this::map);
     }
 
+    @ApiOperation(value = "Get users movie top list")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully received users' top movie list"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
+    @GetMapping("/top")
+    CompletableFuture<ResponseEntity<TopMovieList>> getTopList(@RequestBody Integer user_id)
+    {
+        return medditUserService.getFavoriteMovieSubreddits(user_id).thenCompose(this::map);
+    }
+
 }
