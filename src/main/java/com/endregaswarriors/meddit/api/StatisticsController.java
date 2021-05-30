@@ -67,9 +67,9 @@ public class StatisticsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("/report/favorite")
-    CompletableFuture<ResponseEntity<MovieFavoriteReport>> getFavoriteReport(@RequestBody GetMovieReport getMovieFavoriteReport)
+    CompletableFuture<ResponseEntity<MovieFavoriteReport>> getFavoriteReport(@RequestBody GetMovieReport getMovieReport)
     {
-        return statisticsService.getFavoriteStatisticsForSubreddit(getMovieFavoriteReport).thenCompose(this::map);
+        return statisticsService.getFavoriteStatisticsForSubreddit(getMovieReport).thenCompose(this::map);
     }
 
 

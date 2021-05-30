@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public interface StatisticsService {
 
     CompletableFuture<Response<MovieTrendingReport>> getTrendingStatisticsForSubreddit(GetMovieReport getMovieReport);
-    CompletableFuture<Response<MovieFavoriteReport>> getFavoriteStatisticsForSubreddit(GetMovieReport getMovieFavoriteReport);
+    CompletableFuture<Response<MovieFavoriteReport>> getFavoriteStatisticsForSubreddit(GetMovieReport getMovieReport);
     CompletableFuture<Response<List<TopMovie>>> getTrendingSubreddits(Integer page);
     CompletableFuture<Response<List<TopMovie>>> getFavoriteSubreddits(Integer page);
 }

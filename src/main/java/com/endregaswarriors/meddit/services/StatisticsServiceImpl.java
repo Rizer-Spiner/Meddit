@@ -28,19 +28,37 @@ public class StatisticsServiceImpl implements StatisticsService{
 
     @Override
     public CompletableFuture<Response<MovieTrendingReport>> getTrendingStatisticsForSubreddit(GetMovieReport getMovieReport) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> {
+            List<TrendingMovieStats> trendingMovieStats = trendingMovieStatsRepository
+                    .findAllByTrendingMovieStatsPK_Subreddit_id(getMovieReport.getSubreddit_id());
+            if(trendingMovieStats.isEmpty()){
+                return new Response<>(Status.INTERNAL_ERROR);
+            } else {
+                return new Response<>(Status.SUCCESS,
+                        MovieTrendingReport.builder().trendingMovieStatsList(trendingMovieStats).build());
+            }
+        });
     }
 
     @Override
-    public CompletableFuture<Response<MovieFavoriteReport>> getFavoriteStatisticsForSubreddit(GetMovieReport getMovieFavoriteReport) {
-        return null;
+    public CompletableFuture<Response<MovieFavoriteReport>> getFavoriteStatisticsForSubreddit(GetMovieReport getMovieReport) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<FavoriteMovieStats> favoriteMovieStats = favoriteMovieStatsRepository
+                    .findAllByFavoriteMovieStatsPK_Subreddit_id(getMovieReport.getSubreddit_id());
+            if(favoriteMovieStats.isEmpty()){
+                return new Response<>(Status.INTERNAL_ERROR);
+            } else {
+                return new Response<>(Status.SUCCESS,
+                        MovieFavoriteReport.builder().favoriteMovieStats(favoriteMovieStats).build());
+            }
+        });
     }
 
     @Override
     public CompletableFuture<Response<List<TopMovie>>> getTrendingSubreddits(Integer page) {
         return CompletableFuture.supplyAsync(() -> {
             List<TrendingMovieStats> trendingMovieStats = trendingMovieStatsRepository.findCurrentTrendingTop(
-                    LocalDate.now(), PageRequest.of(page, 20));
+                    LocalDate.now().minusWeeks(1), PageRequest.of(page, 20));
             if(trendingMovieStats.isEmpty()){
                 return new Response<>(Status.INTERNAL_ERROR);
             } else {
@@ -59,7 +77,7 @@ public class StatisticsServiceImpl implements StatisticsService{
     public CompletableFuture<Response<List<TopMovie>>> getFavoriteSubreddits(Integer page) {
         return CompletableFuture.supplyAsync(() -> {
             List<FavoriteMovieStats> favoriteMovieStats = favoriteMovieStatsRepository.findCurrentFavoriteTop(
-                    LocalDate.now(), PageRequest.of(page, 20));
+                    LocalDate.now().minusWeeks(1), PageRequest.of(page, 20));
             if(favoriteMovieStats.isEmpty()){
                 return new Response<>(Status.INTERNAL_ERROR);
             } else {
