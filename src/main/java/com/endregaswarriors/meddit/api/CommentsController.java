@@ -35,8 +35,10 @@ public class CommentsController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("")
-    CompletableFuture<ResponseEntity<CommentSection>> getCommentsForThread(@RequestBody GetComments getComments) {
-
+    CompletableFuture<ResponseEntity<CommentSection>> getCommentsForThread(@RequestParam Long threadId,
+                                                                           @RequestParam Integer userId,
+                                                                           @RequestParam int page) {
+        GetComments getComments = GetComments.builder().threadId(threadId).userId(userId).page(page).build();
         return commentService.getCommentsForThread(getComments).thenCompose(this::map);
     }
 
