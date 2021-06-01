@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface TrendingMovieStatsRepository extends Repository<TrendingMovieStats, TrendingMovieStatsPK> {
 
-    @Query("SELECT tms FROM TrendingMovieStats tms WHERE tms.trendingMovieStatsPK.subreddit_id = :subredditID")
+    @Query("SELECT tms FROM TrendingMovieStats tms WHERE tms.trendingMovieStatsPK.subreddit.subreddit_id = :subredditID")
     List<TrendingMovieStats> findAllByTrendingMovieStatsPK_Subreddit_id(@Param("subredditID") Integer subreddit_id);
 
-    @Query(" FROM TrendingMovieStats tms WHERE :currentDate BETWEEN tms.trendingMovieStatsPK.from_date AND tms.trendingMovieStatsPK.to_date ORDER BY tms.trendingMovieStatsPK.rank")
+    @Query("SELECT tms FROM TrendingMovieStats tms WHERE :currentDate BETWEEN tms.trendingMovieStatsPK.from_date AND tms.trendingMovieStatsPK.to_date ORDER BY tms.trendingMovieStatsPK.rank")
     List<TrendingMovieStats> findCurrentTrendingTop(@Param("currentDate") LocalDate currentDate, Pageable page);
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface FavoriteMovieStatsRepository extends Repository<FavoriteMovieStats, FavoriteMovieStatsPK> {
 
-    @Query("SELECT fms FROM FavoriteMovieStats fms WHERE fms.favoriteMovieStatsPK.subreddit_id=:subredditID")
+    @Query("SELECT fms FROM FavoriteMovieStats fms WHERE fms.favoriteMovieStatsPK.subreddit.subreddit_id=:subredditID")
     List<FavoriteMovieStats> findAllByFavoriteMovieStatsPK_Subreddit_id(@Param("subredditID") Integer subreddit_id);
 
     @Query(" FROM FavoriteMovieStats fms WHERE :currentDate BETWEEN fms.favoriteMovieStatsPK.from_date AND fms.favoriteMovieStatsPK.to_date ORDER BY fms.favoriteMovieStatsPK.rank")

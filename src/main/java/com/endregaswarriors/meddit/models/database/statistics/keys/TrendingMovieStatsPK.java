@@ -1,11 +1,14 @@
 package com.endregaswarriors.meddit.models.database.statistics.keys;
 
+import com.endregaswarriors.meddit.models.database.Subreddit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -16,7 +19,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TrendingMovieStatsPK implements Serializable {
 
-    private Integer subreddit_id;
+    @ManyToOne
+    @JoinColumn(name = "subreddit_id")
+    private Subreddit subreddit;
     private Integer rank;
     private LocalDate from_date;
     private LocalDate to_date;

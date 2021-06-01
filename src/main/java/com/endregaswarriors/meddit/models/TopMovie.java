@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class TopMovie {
 
-    private Integer subreddit_id;
+    private String title;
     private Integer rank;
 
 }

@@ -64,7 +64,7 @@ public class StatisticsServiceImpl implements StatisticsService{
             } else {
                 List<TopMovie> topMovies = trendingMovieStats.stream()
                         .map(trending -> TopMovie.builder()
-                                .subreddit_id(trending.getTrendingMovieStatsPK().getSubreddit_id())
+                                .title(trending.getTrendingMovieStatsPK().getSubreddit().getTitle())
                                 .rank(trending.getTrendingMovieStatsPK().getRank())
                                 .build())
                         .collect(Collectors.toList());
@@ -83,7 +83,7 @@ public class StatisticsServiceImpl implements StatisticsService{
             } else {
                 List<TopMovie> topMovies = favoriteMovieStats.stream()
                         .map(favorite -> TopMovie.builder()
-                                .subreddit_id(favorite.getFavoriteMovieStatsPK().getSubreddit_id())
+                                .title(favorite.getFavoriteMovieStatsPK().getSubreddit().getTitle())
                                 .rank(favorite.getFavoriteMovieStatsPK().getRank())
                                 .build())
                         .collect(Collectors.toList());
