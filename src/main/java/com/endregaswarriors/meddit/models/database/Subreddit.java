@@ -23,4 +23,5 @@ public class Subreddit {
 
     private Integer movie_id;
     private LocalDate created;
+    private String title;
 }
