@@ -8,11 +8,13 @@ import com.endregaswarriors.meddit.models.api.UserTopMovies;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.TopMovieList;
 import com.endregaswarriors.meddit.services.MedditUserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +37,12 @@ public class UsersController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PostMapping("")
-    CompletableFuture<ResponseEntity<MedditUser>> signUserIn(@RequestBody NewUser newUser) {
+    CompletableFuture<ResponseEntity<MedditUser>> signUserIn(@RequestParam String firebase_id,
+                                                             @RequestParam String username) {
+        NewUser newUser = NewUser.builder()
+                .firebase_id(firebase_id)
+                .username(username)
+                .build();
         return medditUserService.signUserIn(newUser).thenCompose(this::map);
     }
 
@@ -46,7 +53,12 @@ public class UsersController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("")
-    CompletableFuture<ResponseEntity<MedditUser>> loginUser(@RequestBody LoginUser loginUser) {
+    CompletableFuture<ResponseEntity<MedditUser>> loginUser(@RequestParam String firebase_id,
+                                                            @RequestParam String username) {
+        LoginUser loginUser = LoginUser.builder()
+                .firebase_id(firebase_id)
+                .username(username)
+                .build();
         return medditUserService.loginUser(loginUser).thenCompose(this::map);
     }
 
@@ -57,7 +69,13 @@ public class UsersController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PatchMapping("")
-    CompletableFuture<ResponseEntity<Void>> joinOrLeaveSubreddit(@RequestBody JoinSubreddit joinSubreddit) {
+    CompletableFuture<ResponseEntity<Void>> joinOrLeaveSubreddit(@RequestParam Integer subredditId,
+                                                                 @RequestParam Integer userId,
+                                                                 @RequestParam boolean join) {
+        JoinSubreddit joinSubreddit = JoinSubreddit.builder()
+                .subredditId(subredditId)
+                .userId(userId)
+                .join(join).build();
         if (joinSubreddit.isJoin())
             return medditUserService.joinSubreddit(joinSubreddit.getSubredditId(), joinSubreddit.getUserId()).thenCompose(this::map);
         else
@@ -70,9 +88,9 @@ public class UsersController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PostMapping("/top")
-    CompletableFuture<ResponseEntity<TopMovieList>> saveTopList(@RequestBody UserTopMovies topMovies)
+    CompletableFuture<ResponseEntity<TopMovieList>> saveTopList(UserTopMovies userTopMovies)
     {
-        return medditUserService.addFavoriteMovieSubreddit(topMovies).thenCompose(this::map);
+        return medditUserService.addFavoriteMovieSubreddit(userTopMovies).thenCompose(this::map);
     }
 
     @ApiOperation(value = "Get users movie top list")
@@ -81,7 +99,7 @@ public class UsersController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("/top")
-    CompletableFuture<ResponseEntity<TopMovieList>> getTopList(@RequestBody Integer user_id)
+    CompletableFuture<ResponseEntity<TopMovieList>> getTopList(@RequestParam Integer user_id)
     {
         return medditUserService.getFavoriteMovieSubreddits(user_id).thenCompose(this::map);
     }

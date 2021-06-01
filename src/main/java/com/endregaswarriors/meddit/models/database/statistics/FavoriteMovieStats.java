@@ -1,5 +1,6 @@
 package com.endregaswarriors.meddit.models.database.statistics;
 
+import com.endregaswarriors.meddit.models.database.Subreddit;
 import com.endregaswarriors.meddit.models.database.statistics.keys.FavoriteMovieStatsPK;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
