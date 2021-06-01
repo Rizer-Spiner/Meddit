@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequestMapping("/meddit/thread")
 @Api(tags = {"Threads"})
-public class ThreadsController extends ControllerBase{
+public class ThreadsController extends ControllerBase {
 
     private ThreadService threadService;
 
@@ -34,7 +34,15 @@ public class ThreadsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PostMapping("")
-    public CompletableFuture<ResponseEntity<MedditThread>> createThread(@RequestBody AddThread newThread){
+    public CompletableFuture<ResponseEntity<MedditThread>> createThread(@RequestParam Integer subredditId,
+                                                                        @RequestParam Integer postedByUserId,
+                                                                        @RequestParam String threadTitle,
+                                                                        @RequestParam String threadContent) {
+        AddThread newThread = AddThread.builder().subredditId(subredditId)
+                .postedByUserId(postedByUserId)
+                .threadTitle(threadTitle)
+                .threadContent(threadContent)
+                .build();
         return threadService.addThread(newThread).thenCompose(this::map);
     }
 
@@ -45,7 +53,14 @@ public class ThreadsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @DeleteMapping("")
-    public CompletableFuture<ResponseEntity<Void>> deleteThread(@RequestBody DeleteThread deleteThread){
+    public CompletableFuture<ResponseEntity<Void>> deleteThread(@RequestParam Long threadId,
+                                                                @RequestParam Integer userId,
+                                                                @RequestParam Integer subredditId) {
+
+        DeleteThread deleteThread = DeleteThread.builder().threadId(threadId)
+                .userId(userId)
+                .subredditId(subredditId)
+                .build();
         return threadService.deleteThread(deleteThread).thenCompose(this::map);
     }
 
@@ -56,7 +71,14 @@ public class ThreadsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @GetMapping("")
-    public CompletableFuture<ResponseEntity<List<MedditThread>>> getThreads(@RequestBody GetThreads getThreadsModel){
+    public CompletableFuture<ResponseEntity<List<MedditThread>>> getThreads(@RequestParam Integer subredditId,
+                                                                            @RequestParam Integer userId,
+                                                                            @RequestParam int page) {
+        GetThreads getThreadsModel = GetThreads.builder()
+                .subredditId(subredditId)
+                .userId(userId)
+                .page(page)
+                .build();
         return threadService.getSubredditThreads(getThreadsModel).thenCompose(this::map);
     }
 
@@ -67,7 +89,17 @@ public class ThreadsController extends ControllerBase{
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PatchMapping("")
-    public CompletableFuture<ResponseEntity<Void>> upvoteThread(@RequestBody VoteThread voteThread){
+    public CompletableFuture<ResponseEntity<Void>> upvoteThread(@RequestParam Integer subredditId,
+                                                                @RequestParam Long threadId,
+                                                                @RequestParam Integer userId,
+                                                                @RequestParam Boolean upvote) {
+
+        VoteThread voteThread = VoteThread.builder()
+                .subredditId(subredditId)
+                .threadId(threadId)
+                .userId(userId)
+                .upvote(upvote)
+                .build();
         return threadService.upVoteThread(voteThread).thenCompose(this::map);
     }
 }

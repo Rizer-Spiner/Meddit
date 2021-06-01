@@ -58,7 +58,8 @@ public class StatisticsController extends ControllerBase{
     @GetMapping("/report/trending")
     CompletableFuture<ResponseEntity<MovieTrendingReport>> getTrendingReport(@RequestParam Integer subreddit_id)
     {
-        return statisticsService.getTrendingStatisticsForSubreddit(GetMovieReport.builder().subreddit_id(subreddit_id).build()).thenCompose(this::map);
+        return statisticsService.getTrendingStatisticsForSubreddit(GetMovieReport.builder().
+                subreddit_id(subreddit_id).build()).thenCompose(this::map);
     }
 
     @ApiOperation(value = "Get a report of a subreddit popularity based on the favorite performance on Meddit")
@@ -69,7 +70,8 @@ public class StatisticsController extends ControllerBase{
     @GetMapping("/report/favorite")
     CompletableFuture<ResponseEntity<MovieFavoriteReport>> getFavoriteReport(@RequestParam Integer subreddit_id)
     {
-        return statisticsService.getFavoriteStatisticsForSubreddit(GetMovieReport.builder().subreddit_id(subreddit_id).build()).thenCompose(this::map);
+        return statisticsService.getFavoriteStatisticsForSubreddit(GetMovieReport.builder().
+                subreddit_id(subreddit_id).build()).thenCompose(this::map);
     }
 
 
