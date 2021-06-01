@@ -47,7 +47,10 @@ public class MovieRedditController extends ControllerBase {
     })
     @GetMapping("/{movieId}")
     public CompletableFuture<ResponseEntity<Movie>> getMovieSubreddit(@PathVariable(value = "movieId") Integer movieId,
-                                                                      @RequestBody MedditUser user) {
+                                                                      @RequestParam Integer user_id,
+                                                                      @RequestParam String firebase_id,
+                                                                      @RequestParam String username) {
+        MedditUser user = MedditUser.builder().user_id(user_id).firebase_id(firebase_id).username(username).build();
         return CompletableFuture.supplyAsync(() -> {
             try {
                 Response<Movie> movieResponse = movieRedditService.getMovieDetails(movieId).get();

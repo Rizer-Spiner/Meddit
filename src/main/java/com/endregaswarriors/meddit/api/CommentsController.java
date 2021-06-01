@@ -49,7 +49,14 @@ public class CommentsController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PostMapping("")
-    CompletableFuture<ResponseEntity<MedditComment>> addComment(@RequestBody AddComment addComment) {
+    CompletableFuture<ResponseEntity<MedditComment>> addComment(@RequestParam Integer subredditId,
+                                                                @RequestParam Long threadId,
+                                                                @RequestParam Integer userId,
+                                                                @RequestParam String content,
+                                                                @RequestParam Long previousCommentId) {
+        AddComment addComment = AddComment.builder().subredditId(subredditId).threadId(threadId)
+                .userId(userId).content(content)
+                .previousCommentId(previousCommentId).build();
         return commentService.addComment(addComment).thenCompose(this::map);
     }
 
@@ -60,7 +67,11 @@ public class CommentsController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @DeleteMapping("")
-    CompletableFuture<ResponseEntity<Void>> deleteComment(@RequestBody DeleteComment deleteComment) {
+    CompletableFuture<ResponseEntity<Void>> deleteComment(@RequestParam Long commentId,
+                                                          @RequestParam Integer userId,
+                                                          @RequestParam Integer subredditId) {
+        DeleteComment deleteComment = DeleteComment.builder().commentId(commentId)
+                .userId(userId).subredditId(subredditId).build();
         return commentService.deleteComment(deleteComment).thenCompose(this::map);
     }
 
@@ -72,7 +83,11 @@ public class CommentsController extends ControllerBase {
             @ApiResponse(code = 500, message = "Internal error")
     })
     @PatchMapping("")
-    CompletableFuture<ResponseEntity<Void>> upvoteComment(@RequestBody VoteComment voteComment) {
+    CompletableFuture<ResponseEntity<Void>> upvoteComment(@RequestParam Integer subredditId,
+                                                          @RequestParam Long commentId,
+                                                          @RequestParam Integer userId,
+                                                          @RequestParam Boolean upvote) {
+        VoteComment voteComment = VoteComment.builder().subredditId(subredditId).commentId(commentId).userId(userId).upvote(upvote).build();
         return commentService.upvoteComment(voteComment).thenCompose(this::map);
     }
 }
