@@ -93,9 +93,7 @@ public class MovieRedditServiceImpl implements MovieRedditService{
                         return new Response<>(Status.NOT_FOUND);
                     }
 
-                    Integer IMDB_id = Integer.parseInt(detailsResponse.getBody().getImdb_id().substring(2));
-
-                    MedditInfo info = getMedditInfo(IMDB_id);
+                    MedditInfo info = getMedditInfo(detailsResponse.getBody());
 
                     Movie movie = Movie.builder()
                         .details(detailsResponse.getBody())
@@ -114,12 +112,15 @@ public class MovieRedditServiceImpl implements MovieRedditService{
         });
     }
 
-    private MedditInfo getMedditInfo(Integer IMDB_id) {
+    private MedditInfo getMedditInfo(MovieDetails movieDetails) {
+        Integer IMDB_id = Integer.parseInt(movieDetails.getImdb_id().substring(2));
         Optional<Subreddit> optionalSubreddit = subredditRepository.findSubredditByMovie_id(IMDB_id);
 
         if(optionalSubreddit.isEmpty()){
-            Subreddit newSubreddit = Subreddit.builder().build();
-            newSubreddit.setSubreddit_id(IMDB_id);
+            Subreddit newSubreddit = Subreddit.builder()
+                    .movie_id(IMDB_id)
+                    .title(movieDetails.getTitle())
+                    .build();
             Subreddit savedSubreddit = subredditRepository.save(newSubreddit);
 
             return MedditInfo.builder()
