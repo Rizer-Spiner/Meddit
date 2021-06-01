@@ -122,6 +122,10 @@ public class MedditUserServiceImpl implements MedditUserService {
 
     @Override
     public CompletableFuture<Response<TopMovieList>> getFavoriteMovieSubreddits(Integer user_id) {
-        return null;
+        return CompletableFuture.supplyAsync(() -> {
+            Optional<TopMovieList> optionalTopMovieList = topMovieListRepository.findById(user_id);
+            return optionalTopMovieList.map(topMovieList -> new Response<>(Status.SUCCESS, topMovieList))
+                    .orElseGet(() -> new Response<>(Status.INTERNAL_ERROR));
+        });
     }
 }

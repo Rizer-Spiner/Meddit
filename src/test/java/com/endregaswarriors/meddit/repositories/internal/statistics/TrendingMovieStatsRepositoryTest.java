@@ -31,7 +31,7 @@ class TrendingMovieStatsRepositoryTest {
     @Test
     public void findCurrentTrendingTop(){
         List<TrendingMovieStats> trendingMovieStats = trendingMovieStatsRepository.findCurrentTrendingTop(
-                LocalDate.now(),
+                LocalDate.of(2021, 05, 28),
                 PageRequest.of(0, 20));
 
         assertFalse(trendingMovieStats.isEmpty());

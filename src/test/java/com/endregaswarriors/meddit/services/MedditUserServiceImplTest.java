@@ -67,7 +67,7 @@ class MedditUserServiceImplTest {
         CompletableFuture<Response<MedditUser>> responseCompletableFuture = medditUserService.signUserIn(
                 NewUser.builder().username("user").firebase_id("123").build());
         Response<MedditUser> medditUserResponse = responseCompletableFuture.get();
-        assertEquals(Status.SUCCESS, medditUserResponse.getStatus());
+        assertEquals(Status.CREATED, medditUserResponse.getStatus());
         assertEquals(user, medditUserResponse.getModel());
     }
 
