@@ -7,6 +7,7 @@ import com.endregaswarriors.meddit.models.api.GetThreads;
 import com.endregaswarriors.meddit.models.api.VoteThread;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.Thread;
+import com.endregaswarriors.meddit.models.database.ThreadLikes;
 import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
 import com.endregaswarriors.meddit.repositories.internal.SubredditMembersRepository;
 import com.endregaswarriors.meddit.repositories.internal.TheadLikesRepository;
@@ -107,7 +108,7 @@ public class ThreadServiceImpl implements ThreadService {
                 for (Thread td : threads) {
                     CompletableFuture<MedditThread> mCF = CompletableFuture.supplyAsync(() -> {
                         Optional<Long> likes = theadLikesRepository.getLikesByThread_id(td.getThread_id());
-                        Optional<Boolean> likedByUser = theadLikesRepository.getLikeForUserByThreadId(getThreadsModel.getUserId(), td.getThread_id());
+                        Optional<ThreadLikes> likedByUser = theadLikesRepository.getLikeForUserByThreadId(getThreadsModel.getUserId(), td.getThread_id());
 
                         return MedditThread.builder()
                                 .threadId(td.getThread_id())

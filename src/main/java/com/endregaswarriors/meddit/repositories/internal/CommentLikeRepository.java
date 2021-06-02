@@ -12,15 +12,15 @@ import java.util.Optional;
 
 public interface CommentLikeRepository extends CrudRepository<CommentLike, CommentLikePK> {
 
-    @Query(value = "SELECT COUNT(cl.like) FROM public.commentlikes cl where cl.comment_id =:commentID", nativeQuery = true)
+    @Query(value = "SELECT COUNT(cl) FROM public.commentlikes cl where cl.comment_id =:commentID", nativeQuery = true)
     Optional<Long> getLikesByCommentId(@Param("commentID") Long comment_id);
 
-    @Query(value = "SELECT cl.like FROM public.commentlikes cl WHERE cl.user_id=:userID AND cl.comment_id =:commentID", nativeQuery = true)
-    Optional<Boolean> getLikeForUserByCommentId(@Param("userID") Integer userId, @Param("commentID") Long comment_id);
+    @Query(value = "SELECT cl FROM public.commentlikes cl WHERE cl.user_id=:userID AND cl.comment_id =:commentID", nativeQuery = true)
+    Optional<CommentLike> getLikeForUserByCommentId(@Param("userID") Integer userId, @Param("commentID") Long comment_id);
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO public.commentlikes VALUES (:commentID, :userID, true)", nativeQuery = true)
+    @Query(value = "INSERT INTO public.commentlikes VALUES (:commentID, :userID)", nativeQuery = true)
     void upvoteComment(@Param("commentID") Long commentId, @Param("userID") Integer userId);
 
     @Transactional

@@ -4,6 +4,7 @@ import com.endregaswarriors.meddit.MedditApplication;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.Subreddit;
 import com.endregaswarriors.meddit.models.database.Thread;
+import com.endregaswarriors.meddit.models.database.ThreadLikes;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -61,7 +62,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikeForUserByThreadIdFalse()
     {
-        Optional<Boolean> like = threadLikesRepository.getLikeForUserByThreadId(1, 1L);
+        Optional<ThreadLikes> like = threadLikesRepository.getLikeForUserByThreadId(1, 1L);
 
         assertTrue(like.isPresent());
         System.out.println(like.get());
@@ -70,7 +71,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikeForUserByThreadIdTrue()
     {
-        Optional<Boolean> like = threadLikesRepository.getLikeForUserByThreadId(2, 1L);
+        Optional<ThreadLikes> like = threadLikesRepository.getLikeForUserByThreadId(2, 1L);
 
         assertTrue(like.isPresent());
         System.out.println(like.get());
@@ -79,7 +80,7 @@ class ThreadRepositoryTest {
     @Test
     void integration_getLikeForUserNotFound()
     {
-        Optional<Boolean> like = threadLikesRepository.getLikeForUserByThreadId(2, 2L);
+        Optional<ThreadLikes> like = threadLikesRepository.getLikeForUserByThreadId(2, 2L);
 
         assertTrue(like.isEmpty());
 

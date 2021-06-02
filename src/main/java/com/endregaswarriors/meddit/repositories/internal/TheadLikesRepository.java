@@ -12,15 +12,15 @@ import java.util.Optional;
 
 public interface TheadLikesRepository extends CrudRepository<ThreadLikes, ThreadLikePK> {
 
-    @Query(value = "SELECT COUNT(tl.like) FROM public.threadlikes tl where tl.thread_id =:threadID", nativeQuery = true)
+    @Query(value = "SELECT COUNT(tl) FROM public.threadlikes tl where tl.thread_id =:threadID", nativeQuery = true)
     Optional<Long> getLikesByThread_id(@Param("threadID") Long threadID);
 
-    @Query(value = "SELECT tl.like FROM public.threadlikes tl WHERE tl.user_id=:userID AND tl.thread_id =:threadID", nativeQuery = true)
-    Optional<Boolean> getLikeForUserByThreadId(@Param("userID") Integer userId, @Param("threadID") Long threadId);
+    @Query(value = "SELECT tl FROM public.threadlikes tl WHERE tl.user_id=:userID AND tl.thread_id =:threadID", nativeQuery = true)
+    Optional<ThreadLikes> getLikeForUserByThreadId(@Param("userID") Integer userId, @Param("threadID") Long threadId);
 
     @Transactional
     @Modifying
-    @Query(value = "INSERT INTO public.threadlikes VALUES (:threadID, :userID, true)", nativeQuery = true)
+    @Query(value = "INSERT INTO public.threadlikes VALUES (:threadID, :userID)", nativeQuery = true)
     void upvoteThread(@Param("threadID") Long threadId, @Param("userID") Integer userId);
 
     @Transactional

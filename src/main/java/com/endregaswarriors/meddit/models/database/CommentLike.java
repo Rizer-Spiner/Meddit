@@ -11,6 +11,5 @@ public class CommentLike {
 
     @EmbeddedId
     private CommentLikePK commentLikePK;
-    private Boolean like;
 
 }

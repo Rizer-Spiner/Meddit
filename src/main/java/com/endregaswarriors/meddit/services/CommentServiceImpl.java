@@ -6,6 +6,7 @@ import com.endregaswarriors.meddit.models.Response;
 import com.endregaswarriors.meddit.models.Status;
 import com.endregaswarriors.meddit.models.api.*;
 import com.endregaswarriors.meddit.models.database.Comment;
+import com.endregaswarriors.meddit.models.database.CommentLike;
 import com.endregaswarriors.meddit.models.database.MedditUser;
 import com.endregaswarriors.meddit.models.database.SubComment;
 import com.endregaswarriors.meddit.models.database.keys.SubredditMemberPK;
@@ -67,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
                 for (Comment ct : comments) {
                     CompletableFuture<MedditComment> cCF = CompletableFuture.supplyAsync(() -> {
                         Optional<Long> likes = commentLikeRepository.getLikesByCommentId(ct.getComment_id());
-                        Optional<Boolean> likedByUser = commentLikeRepository.getLikeForUserByCommentId(
+                        Optional<CommentLike> likedByUser = commentLikeRepository.getLikeForUserByCommentId(
                                 getComments.getUserId(), ct.getComment_id());
                         Optional<Long> commentParent = subCommmentRepository.getParentCommentId(ct.getComment_id());
 

@@ -17,6 +17,5 @@ public class ThreadLikes {
 
     @EmbeddedId
     private ThreadLikePK threadLikePK;
-    private Boolean like;
 
 }
