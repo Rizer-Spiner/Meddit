@@ -12,10 +12,10 @@ import java.util.Optional;
 
 public interface TheadLikesRepository extends CrudRepository<ThreadLikes, ThreadLikePK> {
 
-    @Query(value = "SELECT COUNT(tl) FROM public.threadlikes tl where tl.thread_id =:threadID", nativeQuery = true)
+    @Query("SELECT COUNT(tl) FROM ThreadLikes tl where tl.threadLikePK.thread_id =:threadID")
     Optional<Long> getLikesByThread_id(@Param("threadID") Long threadID);
 
-    @Query(value = "SELECT tl FROM public.threadlikes tl WHERE tl.user_id=:userID AND tl.thread_id =:threadID", nativeQuery = true)
+    @Query("SELECT tl FROM ThreadLikes tl WHERE tl.threadLikePK.user_id=:userID AND tl.threadLikePK.thread_id =:threadID")
     Optional<ThreadLikes> getLikeForUserByThreadId(@Param("userID") Integer userId, @Param("threadID") Long threadId);
 
     @Transactional
